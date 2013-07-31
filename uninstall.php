@@ -14,4 +14,6 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
 
-// TODO: Define uninstall functionality here
+// TODO: remove old transients
+// _transient_SSearch%
+// _transient_timeout_SSearch%

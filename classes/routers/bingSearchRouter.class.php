@@ -4,10 +4,15 @@
 
  class BingSearchRouterImpl extends SearchRouter
  {
-
-     function __construct(WP_Query $wp_query)
+     protected $domain = null;
+     
+     protected $max_result = 100;
+     
+     protected $skip = 0;
+     
+     function __construct()
      {
-         parent::__construct( $wp_query );         
+         parent::__construct();         
          // prepare for search
          $this->init();
          // straight search
@@ -16,28 +21,39 @@
 
      protected function parse_custom_query()
      {
-         $this->set_search_string( $this->query->get( 'search_query' ) );
+         global $wp_query;
+         $this->set_search_string( $wp_query->get( 'search_query' ) );
      }
 
      protected function set_search_uri()
      {
          if (!empty( $this->search_string ))
-         {
-             $this->search_uri.= "&Query='" . $this->search_string;
-             $domain = 'site:http://microsoft.com';
-             $this->search_uri.= urlencode( " $domain'" );
+         {                          
+             $this->search_uri.= "&Query='" . urlencode(urldecode($this->search_string));
+             //$domain = 'site:' . get_bloginfo( 'wpurl' );
+             $this->domain = 'site:http://bio.tuttogreen.it ';
+             $n_results = '&$top='.$this->max_result;
+             $skip = ($this->skip > 0) ? '&$skip='.$this->skip : "";
+             $this->search_uri.= urlencode( " $this->domain'" ) . $n_results . $skip;
+             
              return true;
          }
          else
          {
              return false;
          }
-     }
+     }     
 
+     /**
+      * 
+      * @global type $wp_query
+      * @return array
+      */
      protected function set_matched_post_ids()
      {
+         global $wp_query;
          $search = SmartSearch::get_instance();
-         $apikey = $search->config['search_providers'][$this->query->get( 'search_router' )]['API_KEY'];
+         $apikey = $search->config['search_providers'][$this->router_name]['API_KEY'];
 
          // Encode the credentials and create the stream context.         
          $auth = base64_encode( $apikey . ':' . $apikey );
@@ -50,25 +66,114 @@
          );
          $context = stream_context_create( $data );
          // Get the response from Bing
-         $response = json_decode( file_get_contents( $this->search_uri, 0, $context ) );
-         $results = (!empty( $response )) ? $response->d->results : array();
+         $this->response = json_decode( file_get_contents( $this->search_uri, 0, $context ) );
+         $results = (!empty( $this->response )) ? $this->response->d->results : array();
+         
+         $this->matched_post_ids = array();
          foreach ($results as $result) {
-             $post_id = url_to_postid( $result->Url );
+             $post_id = url_to_postid( str_replace('bio.tuttogreen.it', 'localhost/wp-env', $result->Url) );
              if ($post_id > 0)
              {
                  array_push($this->matched_post_ids, $post_id);
              }
          }
-         $this->matched_post_ids = array_unique( $this->matched_post_ids );
+         return array_unique( $this->matched_post_ids );
      }
      
      protected function alter_main_query()
      {
-         $this->query->is_search = (bool) 1;
-         $this->query->set('post__in', $this->matched_post_ids);            
-         $this->query->set('orderby', 'post__in');
+         global $wp_query;
+         $wp_query->is_search = (bool) 1;
+         $wp_query->set('post__in', $this->matched_post_ids);            
+         $wp_query->set('orderby', 'post__in');
+         
+         // Store next / prev if they are present
+         add_action( 'smart_search_post_altering', array($this, 'set_next_prev_skip') );         
      }
+     
+     /**
+      * 
+      * @param type $found_posts
+      * @param type $query
+      * @return type
+      */
+     public function adjust_offset_pagination($found_posts, $query)
+     {         
+         $query->set('real_found_posts', $found_posts);
+         if ($query->is_main_query() && true === is_penultimate_page( $query ))
+         {             
+             remove_filter('found_posts', array($this, 'adjust_offset_pagination'));
+         }
+         return $found_posts;
+     }
+     
+     public function hook_posts_results($posts, $query)
+     {
+         if($query->is_main_query() && true === is_penultimate_page( $query ))
+         {
+             $this->handle_skip();
+             remove_filter('posts_results', array($this, 'hook_posts_results'));
+         }
+         return $posts;
+     }
+     
+     protected function handle_skip()
+     {
+         global $wp_query;
+         $search = SmartSearch::get_instance();
+         $expiration = $search->config['search_providers'][$this->router_name]['cache_expire'];
+         $this->search_uri = $search->config['search_providers'][$this->router_name]['base_uri'];
+         
+         // if is the first or last page and can skip forward or backward
+         $post_in = $wp_query->get( 'post__in' );
+         $next = $wp_query->get( 'skip_next_url' );
+         $current_page = $wp_query->get('paged');
+         $skipped_on_page = $wp_query->get('skipped_on_page');
+         
+         if (!empty( $next ) && $current_page != $skipped_on_page)
+         {
+             $url = parse_url( $next );
+             parse_str( $url['query'], $args );
 
+             $this->skip = intval( $args['$skip'] );
+             $this->set_search_uri();
+             $next_results = $this->set_matched_post_ids();
+             if (!empty( $next_results ))
+             {
+                 $wp_query->set( 'post__in', array_merge( $post_in, $next_results ) );
+                 $wp_query->set('skipped_on_page', $current_page);
+                 // #cache_set to update with appended skip results
+                 set_transient( $this->transient, $wp_query, $expiration );
+             }
+         }
+     }
+     
+     public function set_next_prev_skip($response)
+     {
+         if(!empty($response->d->results) && isset($response->d->__next))
+         {
+             global $wp_query;
+             
+             if (!empty( $response->d->__next ))
+                 $wp_query->set( 'skip_next_url', $response->d->__next );
+         }
+     }
+     
+     /**
+      * routerName+searchString+domain+maxResultReturned+apiCallOffset
+      * @return string cache_key used for transient
+      */
+     protected function set_transient()
+     {
+         $string = $this->get_router_name()
+             . $this->search_string
+             . $this->domain
+             . $this->max_result
+             . $this->skip;
+
+         return $string;
+     }
+     
  }
 
  

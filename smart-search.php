@@ -25,8 +25,9 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-// include constants
+// include constants & helpers
 require_once( plugin_dir_path( __FILE__ ) . '/inc/const.php' );
+require_once( plugin_dir_path( __FILE__ ) . '/inc/helpers.php' );
 
 // main class instance
 require_once( CLASS_PATH . '/smartSearch.class.php' );
