@@ -17,3 +17,4 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 // TODO: remove old transients
 // _transient_SSearch%
 // _transient_timeout_SSearch%
+// _transient_bing-search-options

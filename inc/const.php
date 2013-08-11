@@ -8,5 +8,6 @@
  define('ROUTERS_PATH', CLASS_PATH . '/routers');
  
  define('PLUGIN_URL', plugin_dir_url(dirname(__FILE__))); 
+ define('PLUGIN_ASSETS_URL', plugin_dir_url(dirname(__FILE__)).'/assets'); 
  define('PLUGIN_SLUG', 'smart-search');
- define('PLUGIN_TXT_DOMAIN', 'smart-search-textdomain');
+ define('PLUGIN_TXT_DOMAIN', 'smart-search');

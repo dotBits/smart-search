@@ -61,6 +61,12 @@
       * @var SearchRouter impl
       */
      private $search_router;
+     
+     /**
+      * Plugin options saved by admin settings page
+      * @var mixed
+      */
+     public $options;
 
      /**
       * Initialize the plugin by setting localization, filters, and administration functions.
@@ -79,9 +85,13 @@
 
          // Load plugin text domain
          add_action( 'init', array($this, 'load_plugin_textdomain') );
+         // Load plugin options
+         //add_action( 'init', array($this, 'load_plugin_options') );
 
          // Add the options page and menu item.
          add_action( 'admin_menu', array($this, 'add_plugin_admin_menu') );
+         // save options hook
+         add_action( 'admin_init', array($this, 'save_settings') );
 
          // Register admin styles and scripts
          add_action( 'admin_print_styles', array($this, 'enqueue_admin_styles') );
@@ -114,15 +124,12 @@
 
      public function set_config()
      {
-         if (file_exists( PLUGIN_PATH . '/inc/config.php' ))
-         {
-             include_once PLUGIN_PATH . '/inc/config.php';
-             $this->config = $config;
-         }
-         else
-         {
-             $this->config = null;
-         }
+         $this->config = get_transient( 'bing-search-options' );
+     }
+     
+     public function get_config()
+     {
+         return get_transient( 'bing-search-options' );
      }
 
      /**
@@ -142,6 +149,23 @@
                  sprintf(__('%s plugin requires Wordpress %s. You are running %s', PLUGIN_TXT_DOMAIN), $plugin['Name'], MIN_WP_VER, $wp_ver);
              die();
          }
+         // set default options if needed
+         $options_transient = 'bing-search-options';
+         if (false === ( $plugin_options = get_transient( $options_transient ) ))
+         {
+             // It wasn't there, so regenerate the data and save the transient
+             $plugin_options['search_providers'] = array(
+                     'bing' => array(
+                             'base_uri' => 'https://api.datamarket.azure.com/Bing/Search/Web?$format=json',
+                             'API_KEY' => '',
+                             'max_result' => 10,
+                             'cache_expire' => 60*60*24
+                     )
+             );
+             $plugin_options['default_search_engine'] = 'bing';
+             
+             set_transient( $options_transient, $plugin_options );
+         }
      }
 
      /**
@@ -153,7 +177,7 @@
       */
      public static function deactivate($network_wide)
      {
-         
+         //delete_transient('bing-search-options');
      }
 
      /**
@@ -163,11 +187,11 @@
       */
      public function load_plugin_textdomain()
      {
-         $domain = $this->plugin_slug;
+         $domain = PLUGIN_TXT_DOMAIN;
          $locale = apply_filters( 'plugin_locale', get_locale(), $domain );
 
          load_textdomain( $domain, WP_LANG_DIR . '/' . $domain . '/' . $domain . '-' . $locale . '.mo' );
-         load_plugin_textdomain( $domain, FALSE, dirname( plugin_basename( __FILE__ ) ) . '/lang/' );
+         load_plugin_textdomain( $domain, FALSE, dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/lang/' );
      }
 
      /**
@@ -210,6 +234,11 @@
          {
              wp_enqueue_script( 'underscore' );
              wp_enqueue_script( $this->plugin_slug . '-admin-script', PLUGIN_URL . '/js/admin.js', array('jquery', 'underscore'), $this->version );
+             wp_localize_script($this->plugin_slug . '-admin-script', 'SS', array(
+                     'invalid_expire_value' => __('Invalid Expire value', PLUGIN_TXT_DOMAIN),
+                     'cache_disabled' => __('Cache disabled', PLUGIN_TXT_DOMAIN),
+                     'hours' => __('Hours', PLUGIN_TXT_DOMAIN),
+             ));
          }
      }
 
@@ -231,8 +260,32 @@
       * @since    1.0.0
       */
      public function display_plugin_admin_page()
+     {         
+         $options = $this->get_config();
+         $data['API_KEY'] = $options['search_providers']['bing']['API_KEY'];
+         $data['cache_expire'] = $options['search_providers']['bing']['cache_expire'];
+         
+         render_view(PLUGIN_PATH . '/views/admin.php', $data);
+     }
+     
+     /**
+      * Register the settings fields for this plugin
+      */
+     public function save_settings()
      {
-         include_once( PLUGIN_PATH . '/views/admin.php' );
+         $admin_page = (!empty( $_GET['page'] )) ? $_GET['page'] : "";
+         if (!empty($admin_page) && $admin_page === $this->plugin_slug)
+         {
+             if(!empty($_POST))
+             {
+                 $data = $_POST;
+                 $options = $this->get_config();
+                 $options['search_providers']['bing']['API_KEY'] = $data['API_KEY'];
+                 $options['search_providers']['bing']['cache_expire'] = $data['cache_expire'];
+                 
+                 set_transient('bing-search-options', $options);
+             }
+         }
      }
 
      /**

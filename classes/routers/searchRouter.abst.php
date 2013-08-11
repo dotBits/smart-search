@@ -33,7 +33,6 @@
      
      /**
       * Formally the cache key for a specific query
-      * expected an md5 hash of 'routername_searchstring_offset'
       * @var string
       */
      protected $transient = null;
@@ -64,8 +63,6 @@
          
          // what's being requested by WP
          $this->parse_custom_query();
-         // since it differs through different engines
-         //$this->set_search_type();
          // build endpoint uri with params
          $this->set_search_uri();
          #cache_set (hashkey)
@@ -73,7 +70,7 @@
      }
 
      /**
-      * Start the flow in one shot: concrete implement the relevant logic
+      * Start the flow in one shot: relevant logic implemented by concretes
       */
      protected function search()
      {
@@ -169,7 +166,7 @@
      
      /**
       * Since each router can define different query params
-      * a concrete implementation is required to set cache key
+      * a concrete implementation is required to define cache key
       */
      abstract protected function set_transient();
  

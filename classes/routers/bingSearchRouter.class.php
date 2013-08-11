@@ -6,15 +6,20 @@
  {
      protected $domain = null;
      
-     protected $max_result = 100;
+     protected $max_result = 50;
      
      protected $skip = 0;
+     
+     private $apikey = null;
      
      function __construct()
      {
          parent::__construct();         
          // prepare for search
+         $search = SmartSearch::get_instance();
+         $this->apikey = $search->config['search_providers'][$this->router_name]['API_KEY'];
          $this->init();
+         
          // straight search
          $this->search();
      }
@@ -52,43 +57,54 @@
      protected function set_matched_post_ids()
      {
          global $wp_query;
-         $search = SmartSearch::get_instance();
-         $apikey = $search->config['search_providers'][$this->router_name]['API_KEY'];
-
-         // Encode the credentials and create the stream context.         
-         $auth = base64_encode( $apikey . ':' . $apikey );
-         $data = array(
-                 'http' => array(
-                         'request_fulluri' => true,
-                         // ignore_errors can help debug – remove for production. This option added in PHP 5.2.10
-                         'ignore_errors' => true,
-                         'header' => "Authorization: Basic $auth")
-         );
-         $context = stream_context_create( $data );
-         // Get the response from Bing
-         $this->response = json_decode( file_get_contents( $this->search_uri, 0, $context ) );
-         $results = (!empty( $this->response )) ? $this->response->d->results : array();
          
-         $this->matched_post_ids = array();
-         foreach ($results as $result) {
-             $post_id = url_to_postid( str_replace('bio.tuttogreen.it', 'localhost/wp-env', $result->Url) );
-             if ($post_id > 0)
-             {
-                 array_push($this->matched_post_ids, $post_id);
+         // apikey is required to make a search
+         if (!empty( $this->apikey ))
+         {
+             // Encode the credentials and create the stream context.         
+             $auth = base64_encode( $this->apikey . ':' . $this->apikey );
+             $data = array(
+                     'http' => array(
+                             'request_fulluri' => true,
+                             // ignore_errors can help debug – remove for production. This option added in PHP 5.2.10
+                             'ignore_errors' => true,
+                             'header' => "Authorization: Basic $auth")
+             );
+             $context = stream_context_create( $data );
+             // Get the response from Bing
+             $this->response = json_decode( file_get_contents( $this->search_uri, 0, $context ) );
+             $results = (!empty( $this->response )) ? $this->response->d->results : array();
+
+             $this->matched_post_ids = array();
+             foreach ($results as $result) {
+                 $post_id = url_to_postid( str_replace( 'bio.tuttogreen.it', 'localhost/wp-env', $result->Url ) );
+                 if ($post_id > 0)
+                 {
+                     array_push( $this->matched_post_ids, $post_id );
+                 }
              }
+             return array_unique( $this->matched_post_ids );
          }
-         return array_unique( $this->matched_post_ids );
+         
      }
      
      protected function alter_main_query()
      {
          global $wp_query;
-         $wp_query->is_search = (bool) 1;
-         $wp_query->set('post__in', $this->matched_post_ids);            
-         $wp_query->set('orderby', 'post__in');
-         
-         // Store next / prev if they are present
-         add_action( 'smart_search_post_altering', array($this, 'set_next_prev_skip') );         
+         if (empty( $this->apikey ))
+         {
+              $wp_query->is_404 = (bool) 1;
+              wp_enqueue_script( 'smart-search-no-apikey-script', PLUGIN_URL . '/js/no-apikey.js', array('jquery'), '1.0',true);              
+         }
+         else
+         {
+             $wp_query->is_search = (bool) 1;
+             $wp_query->set( 'post__in', $this->matched_post_ids );
+             $wp_query->set( 'orderby', 'post__in' );
+
+             // Store next / prev if they are present
+             add_action( 'smart_search_post_altering', array($this, 'set_next_prev_skip') );
+         }
      }
      
      /**

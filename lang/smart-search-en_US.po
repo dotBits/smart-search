@@ -1,0 +1,74 @@
+# Copyright (C) 2013 TODO
+# This file is distributed under the same license as the TODO package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Smart Search\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/plugin-name\n"
+"POT-Creation-Date: 2013-08-04 18:46+0100\n"
+"PO-Revision-Date: 2013-08-04 18:46+0100\n"
+"Last-Translator: Cristian Ronzio <cristian.ronzio@gmail.com>\n"
+"Language-Team: Contesio <search@contesio.com>\n"
+"Language: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-KeywordsList: __;_e;_n;_x;esc_html_e;esc_html__;esc_attr_e;"
+"esc_attr__;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_x:1,2c;_n:1,2\n"
+"X-Poedit-Basepath: ../\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: classes/smartSearch.class.php:149
+#, php-format
+msgid "%s plugin requires Wordpress %s. You are running %s"
+msgstr "%s plugin requires Wordpress %s. You are running %s"
+
+#: classes/smartSearch.class.php:238
+msgid "Invalid Expire value"
+msgstr "Cache expire must contain numbers only!"
+
+#: classes/smartSearch.class.php:239
+msgid "Cache disabled"
+msgstr "Cache is disabled (not recommended)"
+
+#: classes/smartSearch.class.php:240
+msgid "Hours"
+msgstr "Hours"
+
+#: classes/smartSearch.class.php:253
+msgid "Smart Search Options Page"
+msgstr "Smart Search Options Page"
+
+#: classes/smartSearch.class.php:253
+msgid "Search Settings"
+msgstr "BING Search Engine"
+
+#: views/admin.php:25
+msgid "API KEY title"
+msgstr "BING API KEY"
+
+#: views/admin.php:28
+msgid "API KEY description"
+msgstr ""
+"Don't have an API key? <a href=\"https://datamarket.azure.com/dataset/bing/"
+"search\" target=\"_blank\">Get it here</a>"
+
+#: views/admin.php:32
+msgid "Cache Expire title"
+msgstr "Cache Expiration time"
+
+#: views/admin.php:36
+msgid "Cache Expire description"
+msgstr ""
+"how often to refresh data from Bing Search Engine (in seconds). Set 0 to "
+"disable Caching."
+
+#: views/admin.php:42
+msgid "Save Changes"
+msgstr "Save Changes"
+
+#~ msgid "API KEY not found"
+#~ msgstr ""
+#~ "SmartSearch plugin was unable to use your API KEY. Fix this by setting a "
+#~ "valid API KEY in the plugin's settings"
