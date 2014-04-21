@@ -103,8 +103,10 @@
          do_action( 'smart_search_post_altering', $this->response );
 
          global $wp_query;
-         // #cache_set             
-         set_transient( $this->transient, $wp_query, $expiration );
+         // #cache_set
+         if($expiration > 0) {
+             set_transient( $this->transient, $wp_query, $expiration );
+         }
      }
      
      private function get_cached_results(WP_Query $cached_query)

@@ -156,7 +156,7 @@
              // It wasn't there, so regenerate the data and save the transient
              $plugin_options['search_providers'] = array(
                      'bing' => array(
-                             'base_uri' => 'https://api.datamarket.azure.com/Bing/Search/Web?$format=json',
+                             'base_uri' => 'https://api.datamarket.azure.com/Bing/Search/v1/Web?$format=json',
                              'API_KEY' => '',
                              'max_result' => 10,
                              'cache_expire' => 60*60*24

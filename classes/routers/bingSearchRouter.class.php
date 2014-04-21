@@ -33,13 +33,13 @@
      protected function set_search_uri()
      {
          if (!empty( $this->search_string ))
-         {                          
-             $this->search_uri.= "&Query='" . urlencode(urldecode($this->search_string));
-             //$domain = 'site:' . get_bloginfo( 'wpurl' );
+         {
+             $this->search_uri .= "&Query='" . urlencode(urldecode($this->search_string));
+             //$this->domain = 'site:' . get_bloginfo( 'wpurl' );
              $this->domain = 'site:http://bio.tuttogreen.it ';
-             $n_results = '&$top='.$this->max_result;
-             $skip = ($this->skip > 0) ? '&$skip='.$this->skip : "";
-             $this->search_uri.= urlencode( " $this->domain'" ) . $n_results . $skip;
+             $n_results = '&$top=' . $this->max_result;
+             $skip = ($this->skip > 0) ? '&$skip=' . $this->skip : "";
+             $this->search_uri .= urlencode(" $this->domain'") . $n_results . $skip;
              
              return true;
          }
@@ -61,13 +61,13 @@
          // apikey is required to make a search
          if (!empty( $this->apikey ))
          {
-             // Encode the credentials and create the stream context.         
+             // Encode the credentials and create the stream context.
              $auth = base64_encode( $this->apikey . ':' . $this->apikey );
              $data = array(
                      'http' => array(
                              'request_fulluri' => true,
                              // ignore_errors can help debug – remove for production. This option added in PHP 5.2.10
-                             'ignore_errors' => true,
+                             'ignore_errors' => false,
                              'header' => "Authorization: Basic $auth")
              );
              $context = stream_context_create( $data );
@@ -77,7 +77,7 @@
 
              $this->matched_post_ids = array();
              foreach ($results as $result) {
-                 $post_id = url_to_postid( str_replace( 'bio.tuttogreen.it', 'localhost/wp-env', $result->Url ) );
+                 $post_id = url_to_postid( str_replace( 'bio.tuttogreen.it', 'wp.local', $result->Url ) ); // @TODO remove str_replace
                  if ($post_id > 0)
                  {
                      array_push( $this->matched_post_ids, $post_id );
@@ -94,7 +94,7 @@
          if (empty( $this->apikey ))
          {
               $wp_query->is_404 = (bool) 1;
-              wp_enqueue_script( 'smart-search-no-apikey-script', PLUGIN_URL . '/js/no-apikey.js', array('jquery'), '1.0',true);              
+              wp_enqueue_script( 'smart-search-no-apikey-script', PLUGIN_URL . '/js/no-apikey.js', array('jquery'), '1.0', true);
          }
          else
          {

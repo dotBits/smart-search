@@ -5,7 +5,6 @@ $config['search_providers'] = array(
         'bing' => array(
                 'slugs' => array('bing', 'microsoft'),
                 'base_uri' => 'https://api.datamarket.azure.com/Bing/Search/Web?$format=json',
-                'API_KEY' => 'wtn4cvGk7uEqzSP/XBwwYGZtenwexkKitkZtGeb0ViA',
                 'max_result' => 10,
                 'cache_expire' => 3600
         ),
