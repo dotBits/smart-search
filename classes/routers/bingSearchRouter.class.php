@@ -35,8 +35,8 @@
          if (!empty( $this->search_string ))
          {
              $this->search_uri .= "&Query='" . urlencode(urldecode($this->search_string));
-             //$this->domain = 'site:' . get_bloginfo( 'wpurl' );
-             $this->domain = 'site:http://bio.tuttogreen.it ';
+             $this->domain = 'site:' . site_url();
+             //$this->domain = 'site:http://bio.tuttogreen.it ';
              $n_results = '&$top=' . $this->max_result;
              $skip = ($this->skip > 0) ? '&$skip=' . $this->skip : "";
              $this->search_uri .= urlencode(" $this->domain'") . $n_results . $skip;
@@ -77,7 +77,7 @@
 
              $this->matched_post_ids = array();
              foreach ($results as $result) {
-                 $post_id = url_to_postid( str_replace( 'bio.tuttogreen.it', 'wp.local', $result->Url ) ); // @TODO remove str_replace
+                 $post_id = url_to_postid( $result->Url );
                  if ($post_id > 0)
                  {
                      array_push( $this->matched_post_ids, $post_id );

@@ -1,61 +1,76 @@
-=== Plugin Name ===
-Contributors: (this should be a list of wordpress.org userids)
+=== Smart Search Lite ===
+Contributors: Contesio
 Donate link: http://example.com/
-Tags: comments, spam
+Tags: search, archives
 Requires at least: 3.5.1
-Tested up to: 3.6
+Tested up to: 3.9
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+Smart Search replace the native Wordpress search engine using the Microsoft Bing Search API.
+Results are displayed according to your current theme.
 
 == Description ==
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+Providing a real search engine feature within a Wordpress blog is a very complex subject.
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+Smart Search enhance the Wordpress search engine by querying Microsoft Bing using its Search API. <br>
+The search query is performed within the context of your website url, as you type in the http://bing.com search input like so:
 
-A few notes about the sections above:
+*site:http://www.yourblog.com find this or that*
 
-*   "Contributors" is a comma separated list of wp.org/wp-plugins.org usernames
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
+URLs from the BING result set are parsed and converted to Wordpress post IDs, thus the display process is the same your theme implements for regular searches.
 
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
+You can also choose to cache search engine's results for a defined period of time, which will save your Transaction amount for the same search query.
 
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
+In order to use it, you must have a valid [Windows Account key][1] and you will need to activate at least the [free subscription here][3] or [here][2]
+
+Easy, simple and fast!
+
+**Note:** *your blog content must be indexed by BING in order to see the matching result set.*
+
+[1]: https://datamarket.azure.com/account/keys "Create Windows Account key"
+[2]: https://datamarket.azure.com/dataset/bing/search "Activate your Bing Search API plan"
+[3]: https://datamarket.azure.com/dataset/8818F55E-2FE5-4CE3-A617-0B8BA8419F65 "Bing Search API | Web Results only plan"
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
+Once you have the Windows Account key and the basic plan active:
 
-e.g.
-
-1. Upload `plugin-name.php` to the `/wp-content/plugins/` directory
+1. Upload `smart-search` folder to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
+1. Under the Plugins menu click on BING Search Engine or visit http://yourblog.com/wp-admin/plugins.php?page=smart-search
+1. Fill in the only 2 options you see there:
+	* Insert the Windows Account Key you've obtained from the link above
+	* Increase or decrease the cache duration for search results
+1. Be sure that your blog is already indexed by http://bing.com typing site:http://yourblog.com in the search input
+1. You're now able to search through your posts:
+ 	* by using <?php get_search_form(); ?> that will display searchform.php in your Theme or the WP built-in form
+ 	* or simply by URL: _http://yourblog.com?s=sentence_
+
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= Why should I install this search goodness? =
 
-An answer to that question.
-
-= What about foo bar? =
+*
+*
+* User experience is more pleasant
+* Websites with a good search engine rocks!
 
 Answer to foo bar dilemma.
+
+= Why Bing and not Google or something else? =
+
+* Bing it's free up to 5.000 transactions per month (or search queries)
+* Other plans over this threshold are competitive too
+* No credit card required
+* Bing search results always meet, like the others
+* This is the most competitive one I've been able to find out
+
+= Can I see analytics about performed searches? =
+
 
 == Screenshots ==
 
