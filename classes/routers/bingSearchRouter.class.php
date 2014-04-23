@@ -77,7 +77,7 @@
 
              $this->matched_post_ids = array();
              foreach ($results as $result) {
-                 $post_id = url_to_postid( $result->Url );
+                 $post_id = $this->search_post_id_from_url( $result->Url );
                  if ($post_id > 0)
                  {
                      array_push( $this->matched_post_ids, $post_id );
