@@ -2,18 +2,18 @@
 /**
  *
  * @package   SmartSearch
- * @author    Christian Ronzio <cristian.ronzio@gmail.com>
+ * @author    Cristian Ronzio <cristian.ronzio@gmail.com>
  * @license   GPL-2.0+
- * @link      TODO
- * @copyright TODO
+ * @link      http://www.contesio.com
+ * @copyright www.contesio.com
  *
  * @wordpress-plugin
- * Plugin Name: BING Search LITE
- * Plugin URI:  TODO
- * Description: Equip Wordpress with BING search engine
+ * Plugin Name: Smart Search LITE
+ * Plugin URI:  http://www.contesio.com/wordpress-plugins/smart-search
+ * Description: Enhance Wordpress search engine by replacing it with BING
  * Version:     1.0.0
- * Author:      Christian Ronzio
- * Author URI:  TODO
+ * Author:      Cristian Ronzio
+ * Author URI:  http://www.contesio.com/about
  * Text Domain: smart-search-textdomain
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt

@@ -250,7 +250,11 @@
      public function add_plugin_admin_menu()
      {
          $this->plugin_screen_hook_suffix = add_plugins_page(
-             __( 'Smart Search Options Page', PLUGIN_TXT_DOMAIN ), __( 'Search Settings', PLUGIN_TXT_DOMAIN ), 'manage_options', $this->plugin_slug, array($this, 'display_plugin_admin_page')
+             __( 'Smart Search Options Page', PLUGIN_TXT_DOMAIN ),
+             __( 'Search Settings', PLUGIN_TXT_DOMAIN ),
+             'manage_options',
+             $this->plugin_slug,
+             array($this, 'display_plugin_admin_page')
          );
      }
 
