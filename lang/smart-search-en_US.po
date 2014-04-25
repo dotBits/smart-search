@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Smart Search\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/plugin-name\n"
-"POT-Creation-Date: 2014-04-25 15:48+0100\n"
-"PO-Revision-Date: 2014-04-25 16:13+0100\n"
+"POT-Creation-Date: 2014-04-25 18:19+0100\n"
+"PO-Revision-Date: 2014-04-25 18:20+0100\n"
 "Last-Translator: Cristian Ronzio <cristian@contesio.com>\n"
 "Language-Team: Contesio <search@contesio.com>\n"
 "Language: en\n"
@@ -46,6 +46,10 @@ msgstr "Smart Search Engine"
 msgid "API KEY title"
 msgstr "Microsoft BING API KEY"
 
+#: views/admin.php:12
+msgid "API KEY placeholder"
+msgstr "Paste your BING Account KEY here"
+
 #: views/admin.php:13
 msgid "API KEY description"
 msgstr ""
@@ -87,6 +91,10 @@ msgstr ""
 msgid "Force domain title"
 msgstr "Override \"site:\" domain context"
 
+#: views/admin.php:40
+msgid "Context domain placeholder"
+msgstr "another.domain.com"
+
 #: views/admin.php:43
 #, php-format
 msgid "Force domain context %s"
@@ -95,7 +103,22 @@ msgstr ""
 "used as the search context. <br>Useful if you are using a local dump of your "
 "online indexed content"
 
-#: views/admin.php:52
+#: views/admin.php:51
+msgid "No results url title"
+msgstr "Nothing found redirect"
+
+#: views/admin.php:53
+msgid "No results url placeholder"
+msgstr "http://retry.example.com"
+
+#: views/admin.php:55
+msgid "No results description"
+msgstr ""
+"You could use a custom endpoint url to handle searches without any results. "
+"<br>Search sentence will be appendend to this url as <strong>"
+"\"query=sentence</strong>\". Leave it blank for default"
+
+#: views/admin.php:62
 msgid "Save Changes"
 msgstr "Save Changes"
 

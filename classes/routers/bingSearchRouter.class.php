@@ -116,7 +116,16 @@
 	     }
 	     else {
 		 // no results handler
-		 $wp_query->set('post__in', array(0));
+		 $search = SmartSearch::get_instance();
+		 $no_results_url = $search->config['search_providers'][$this->router_name]['no_results_url'];
+		 if(!empty($no_results_url)) {
+		     wp_redirect($no_results_url . '?query=' . $this->get_search_string());
+		     exit;
+		 }
+		 else {
+		     $wp_query->set('post__in', array(0));
+		 }
+		 
 	     }
              
          }
