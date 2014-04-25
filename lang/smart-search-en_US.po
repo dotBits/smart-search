@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Smart Search\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/plugin-name\n"
-"POT-Creation-Date: 2014-04-25 13:47+0100\n"
-"PO-Revision-Date: 2014-04-25 13:55+0100\n"
+"POT-Creation-Date: 2014-04-25 14:46+0100\n"
+"PO-Revision-Date: 2014-04-25 14:49+0100\n"
 "Last-Translator: Cristian Ronzio <cristian@contesio.com>\n"
 "Language-Team: Contesio <search@contesio.com>\n"
 "Language: en\n"
@@ -59,17 +59,31 @@ msgstr ""
 "datamarket.azure.com/dataset/bing/search\" target=\"_blank\">here</a> to "
 "subscribe"
 
-#: views/admin.php:18
+#: views/admin.php:17
 msgid "Cache Expire title"
 msgstr "Cache Expiration time"
 
-#: views/admin.php:22
+#: views/admin.php:21
 msgid "Cache Expire description"
 msgstr ""
 "how often to refresh data from Bing Search Engine (in seconds). Set 0 to "
 "disable Caching."
 
-#: views/admin.php:28
+#: views/admin.php:27
+msgid "Cache clear"
+msgstr "Remove cached data"
+
+#: views/admin.php:29
+msgid "Cache cleared"
+msgstr "Just cleared cached results!"
+
+#: views/admin.php:33
+msgid "Cache clear description"
+msgstr ""
+"To remove all cached search results <a href=\"plugins.php?page=smart-"
+"search&clear=1\">click here</a>"
+
+#: views/admin.php:39
 msgid "Save Changes"
 msgstr "Save Changes"
 

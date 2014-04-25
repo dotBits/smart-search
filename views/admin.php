@@ -21,6 +21,18 @@
                         <p class="description"><?php _e('Cache Expire description', PLUGIN_TXT_DOMAIN) ?></p>
                     </td>
                 </tr>
+		<tr valign="top">
+                    <th scope="row">
+			<?php if(empty($_GET['clear'])) : ?>
+			    <label for="blogname"><?php _e('Cache clear', PLUGIN_TXT_DOMAIN) ?></label>
+			<?php else : ?>
+			    <label for="blogname"><?php _e('Cache cleared', PLUGIN_TXT_DOMAIN) ?></label>
+			<?php endif;  ?>
+		    </th>
+                    <td>
+                        <p class="description"><?php _e('Cache clear description', PLUGIN_TXT_DOMAIN) ?>
+                    </td>
+                </tr>
                 
             </tbody>
         </table>

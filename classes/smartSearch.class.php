@@ -292,7 +292,7 @@
 	     if(!empty($_GET['clear'])) 
 	     {
 		 global $wpdb;		 
-		 $wpdb->query("DELETE FROM $wpdb->$options WHERE option_id != 0 AND option_name LIKE '_transient_SSearch%'");
+		 $wpdb->query("DELETE FROM $wpdb->options WHERE option_id != 0 AND option_name LIKE '_transient_SSearch%'");
 	     }
          }
      }
