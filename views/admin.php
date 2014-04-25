@@ -16,7 +16,7 @@
                 <tr valign="top">
                     <th scope="row"><label for="blogdescription"><?php _e('Cache Expire title', PLUGIN_TXT_DOMAIN) ?></label></th>
                     <td>
-                        <input name="cache_expire" type="text" id="cache_expire" value="<?php echo $data['cache_expire'] ?>" class="small-text">
+                        <input name="cache_expire" type="text" id="cache_expire" value="<?php echo $data['cache_expire'] ?>" class="medium-text">
                         <span id="human-time" style="margin-left:10px"></span>
                         <p class="description"><?php _e('Cache Expire description', PLUGIN_TXT_DOMAIN) ?></p>
                     </td>
@@ -31,6 +31,19 @@
 		    </th>
                     <td>
                         <p class="description"><?php _e('Cache clear description', PLUGIN_TXT_DOMAIN) ?>
+                    </td>
+                </tr>
+		
+		<tr valign="top">		    
+                    <th scope="row"><label for="blogname"><?php _e('Force domain title', PLUGIN_TXT_DOMAIN) ?></label></th>
+                    <td>
+                        <input name="context_domain" type="text" id="context_domain" value="<?php echo $data['context_domain'] ?>" class="regular-text">
+                        <p class="description">
+			    <?php echo sprintf(
+				__('Force domain context %s', PLUGIN_TXT_DOMAIN), str_replace(array("http://", "https://"), "", site_url())
+				) 
+			    ?>
+			</p>
                     </td>
                 </tr>
                 

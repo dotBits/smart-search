@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Smart Search\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/plugin-name\n"
-"POT-Creation-Date: 2014-04-25 14:46+0100\n"
-"PO-Revision-Date: 2014-04-25 14:49+0100\n"
+"POT-Creation-Date: 2014-04-25 15:48+0100\n"
+"PO-Revision-Date: 2014-04-25 16:13+0100\n"
 "Last-Translator: Cristian Ronzio <cristian@contesio.com>\n"
 "Language-Team: Contesio <search@contesio.com>\n"
 "Language: en\n"
@@ -66,8 +66,8 @@ msgstr "Cache Expiration time"
 #: views/admin.php:21
 msgid "Cache Expire description"
 msgstr ""
-"how often to refresh data from Bing Search Engine (in seconds). Set 0 to "
-"disable Caching."
+"how often data from Bing Search Engine must be refreshed (in seconds). Set 0 "
+"to disable Caching."
 
 #: views/admin.php:27
 msgid "Cache clear"
@@ -83,9 +83,40 @@ msgstr ""
 "To remove all cached search results <a href=\"plugins.php?page=smart-"
 "search&clear=1\">click here</a>"
 
-#: views/admin.php:39
+#: views/admin.php:38
+msgid "Force domain title"
+msgstr "Override \"site:\" domain context"
+
+#: views/admin.php:43
+#, php-format
+msgid "Force domain context %s"
+msgstr ""
+"You can set any domain here to override <strong>%s</strong> and it will be "
+"used as the search context. <br>Useful if you are using a local dump of your "
+"online indexed content"
+
+#: views/admin.php:52
 msgid "Save Changes"
 msgstr "Save Changes"
+
+#~ msgid ""
+#~ "You can set any domain here to ovverride %s and it will be used as the "
+#~ "search context. Useful if you are using a local dump of your online "
+#~ "(indexed) content"
+#~ msgstr ""
+#~ "You can set any domain here to override %s and it will be used as the "
+#~ "search context. Useful if you are using a local dump of your online "
+#~ "(indexed) content"
+
+#~ msgid "Override %s domain context"
+#~ msgstr "Override %s domain context"
+
+#, fuzzy
+#~ msgid "Custom domain description"
+#~ msgstr ""
+#~ "You need a BING Search API free plan at least. Go <a href=\"https://"
+#~ "datamarket.azure.com/dataset/bing/search\" target=\"_blank\">here</a> to "
+#~ "subscribe"
 
 #~ msgid "API KEY not found"
 #~ msgstr ""

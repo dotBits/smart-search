@@ -268,6 +268,7 @@
          $options = $this->get_config();
          $data['API_KEY'] = $options['search_providers']['bing']['API_KEY'];
          $data['cache_expire'] = $options['search_providers']['bing']['cache_expire'];
+	 $data['context_domain'] = $options['search_providers']['bing']['context_domain'];
          
          render_view(PLUGIN_PATH . '/views/admin.php', $data);
      }
@@ -286,6 +287,7 @@
                  $options = $this->get_config();
                  $options['search_providers']['bing']['API_KEY'] = $data['API_KEY'];
                  $options['search_providers']['bing']['cache_expire'] = $data['cache_expire'];
+		 $options['search_providers']['bing']['context_domain'] = $data['context_domain'];
                  
                  set_transient('bing-search-options', $options);
              }

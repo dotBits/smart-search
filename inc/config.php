@@ -6,12 +6,8 @@ $config['search_providers'] = array(
                 'slugs' => array('bing', 'microsoft'),
                 'base_uri' => 'https://api.datamarket.azure.com/Bing/Search/Web?$format=json',
                 'max_result' => 10,
-                'cache_expire' => 3600
-        ),
-        
-        'google' => array(
-                'slugs' => array('google', 'big_g'),
-                'base_uri' => null
+                'cache_expire' => 3600,
+		'context_domain' => ''
         )
 );
 // used to override WP. must be registered above. Default to "none"

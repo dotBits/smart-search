@@ -36,6 +36,8 @@
       * @var string
       */
      protected $transient = null;
+     
+     protected $context_domain = null;
 
      /**
       * Constructor
@@ -63,6 +65,11 @@
          
          // what's being requested by WP
          $this->parse_custom_query();
+	 // define context, can be overriden by config
+	 $this->context_domain = $search->config['search_providers'][$this->router_name]['context_domain'];
+	 if(empty($this->context_domain)) {
+	     $this->context_domain = site_url();
+	 }
          // build endpoint uri with params
          $this->set_search_uri();
          #cache_set (hashkey)

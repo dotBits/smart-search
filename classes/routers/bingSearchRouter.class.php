@@ -35,7 +35,7 @@
          if (!empty( $this->search_string ))
          {
              $this->search_uri .= "&Query='" . urlencode(urldecode($this->search_string));
-             $this->domain = 'site:' . site_url();
+             $this->domain = 'site:' . $this->context_domain;
              $n_results = '&$top=' . $this->max_result;
              $skip = ($this->skip > 0) ? '&$skip=' . $this->skip : "";
              $this->search_uri .= urlencode(" $this->domain'") . $n_results . $skip;
@@ -60,6 +60,7 @@
          // apikey is required to make a search
          if (!empty( $this->apikey ))
          {
+	     $search = SmartSearch::get_instance();
              // Encode the credentials and create the stream context.
              $auth = base64_encode( $this->apikey . ':' . $this->apikey );
              $data = array(
@@ -75,8 +76,16 @@
              $results = (!empty( $this->response )) ? $this->response->d->results : array();
 
              $this->matched_post_ids = array();
+	     // if context_domain overrides adjust match accordingly
+	     $custom_domain = $search->config['search_providers'][$this->router_name]['context_domain'];
              foreach ($results as $result) {
-                 $post_id = $this->search_post_id_from_url($result->Url);
+		 if (!empty($custom_domain)) {
+		     $post_url = str_replace($custom_domain, str_replace(array("http://", "https://"), "", site_url()), $result->Url);
+		 }
+		 else {
+		     $post_url = $result->Url;
+		 }
+                 $post_id = $this->search_post_id_from_url($post_url);
                  if ($post_id > 0)
                  {
                      array_push( $this->matched_post_ids, $post_id );
@@ -97,12 +106,19 @@
          }
          else
          {
-             $wp_query->is_search = (bool) 1;
-             $wp_query->set( 'post__in', $this->matched_post_ids );
-             $wp_query->set( 'orderby', 'post__in' );
+	     if (!empty($this->matched_post_ids)) {
+		 $wp_query->is_search = (bool) 1;
+		 $wp_query->set('post__in', $this->matched_post_ids);
+		 $wp_query->set('orderby', 'post__in');
 
-             // Store next / prev if they are present
-             add_action( 'smart_search_post_altering', array($this, 'set_next_prev_skip') );
+		 // Store next / prev if they are present
+		 add_action('smart_search_post_altering', array($this, 'set_next_prev_skip'));
+	     }
+	     else {
+		 // no results handler
+		 
+	     }
+             
          }
      }
      
