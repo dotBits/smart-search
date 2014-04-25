@@ -106,8 +106,8 @@
          }
          else
          {
-	     if (!empty($this->matched_post_ids)) {
-		 $wp_query->is_search = (bool) 1;
+	     $wp_query->is_search = (bool) 1;
+	     if (!empty($this->matched_post_ids)) {		 
 		 $wp_query->set('post__in', $this->matched_post_ids);
 		 $wp_query->set('orderby', 'post__in');
 
@@ -116,7 +116,7 @@
 	     }
 	     else {
 		 // no results handler
-		 
+		 $wp_query->set('post__in', array(0));
 	     }
              
          }
