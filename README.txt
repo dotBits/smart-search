@@ -13,15 +13,15 @@ Results are displayed according to your current theme.
 
 == Description ==
 
-Providing a search engine is a very complex subject if you aim to have a good one by showing results in the context of a specific website.
+Providing a search engine is a very complex subject if you aim to handle topics like relevance, semantics, performances and so on.
 
 Smart Search enhance the Wordpress search engine by querying Microsoft Bing using its Search API. <br>
 The search query is performed in the context of your website url, as you type in the http://bing.com search input like so:
 
 *site:http://www.yourblog.com find this or that*
 
-URLs from the BING result set are parsed and converted to Wordpress post IDs, thus the display process is the same your theme implements for regular searches.<br>
-* Works with built-in post types. Custom post types are supported as well
+URLs from the BING result set are converted by Smart Search to Wordpress post IDs, thus the display process is the same your theme implements for regular searches.<br>
+*Works with built-in post types. Custom post types are supported as well*
 
 You can also choose to cache search engine's results for a defined period of time, which will save your Transaction amount for the same search query.
 
@@ -58,9 +58,9 @@ Once you have the Windows Account key and the basic plan active:
 
 = Why should I install this search goodness? =
 
-* Keep in mind that a large percentage of users, as the first act will scroll the page looking for a search box
+* Keep in mind that a large percentage of users, as the first act will scroll the page looking for a search input box - [Steve Krug]
 * Is not always easy to provide a lean navigation structure, especially when you have a deep content structure
-* Sooner or later, users will think "Let me find it" or "Let me see if is there". Allow them to do it then!
+* Sooner or later, users will think "Let me find it" or "Let me see if is here". Allow them to do it well!
 * User experience is more pleasant if you can easily find what you need
 * A website with a good search engine gains reliability
 
@@ -69,7 +69,7 @@ Once you have the Windows Account key and the basic plan active:
 * Bing it's free up to 5.000 transactions per month (or search queries)
 * No credit card required
 * Other plans over this threshold are competitive too
-* Bing search results always meet, like the others
+* Bing search results always meet, like many others
 * This is the most competitive one I've been able to find out
 
 == Screenshots ==
@@ -84,3 +84,8 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 
 = 0.9 =
 * First release with custom post types support
+
+== Upgrade Notice ==
+
+= 0.9 =
+* Join the new Wordpress search engine Era

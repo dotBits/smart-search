@@ -124,8 +124,7 @@
 		     }
 		     else {
 			 wp_redirect($no_results_url . '?query=' . $this->get_search_string());
-		     }
-		     
+		     }		     
 		     exit;
 		 }
 		 else {
