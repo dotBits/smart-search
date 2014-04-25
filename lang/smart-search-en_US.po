@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Smart Search\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/plugin-name\n"
-"POT-Creation-Date: 2014-04-25 18:19+0100\n"
-"PO-Revision-Date: 2014-04-25 18:20+0100\n"
+"POT-Creation-Date: 2014-04-25 18:39+0100\n"
+"PO-Revision-Date: 2014-04-25 18:40+0100\n"
 "Last-Translator: Cristian Ronzio <cristian@contesio.com>\n"
 "Language-Team: Contesio <search@contesio.com>\n"
 "Language: en\n"
@@ -42,60 +42,67 @@ msgstr "Smart Search Options Page"
 msgid "Search Settings"
 msgstr "Smart Search Engine"
 
-#: views/admin.php:10
+#: views/admin.php:4
+msgid "Plugin description admin"
+msgstr ""
+"Smart Search replace the native Wordpress search engine using the Microsoft "
+"Bing Search API.<br>Results are displayed by your current theme's search "
+"results page."
+
+#: views/admin.php:11
 msgid "API KEY title"
 msgstr "Microsoft BING API KEY"
 
-#: views/admin.php:12
+#: views/admin.php:13
 msgid "API KEY placeholder"
 msgstr "Paste your BING Account KEY here"
 
-#: views/admin.php:13
+#: views/admin.php:14
 msgid "API KEY description"
 msgstr ""
 "Don't have an API key? <a href=\"https://datamarket.azure.com/account/keys\" "
 "target=\"_blank\">Get it here</a>"
 
-#: views/admin.php:13
+#: views/admin.php:14
 msgid "BING Plan description"
 msgstr ""
 "You need a BING Search API free plan at least. Go <a href=\"https://"
 "datamarket.azure.com/dataset/bing/search\" target=\"_blank\">here</a> to "
 "subscribe"
 
-#: views/admin.php:17
+#: views/admin.php:18
 msgid "Cache Expire title"
 msgstr "Cache Expiration time"
 
-#: views/admin.php:21
+#: views/admin.php:22
 msgid "Cache Expire description"
 msgstr ""
 "how often data from Bing Search Engine must be refreshed (in seconds). Set 0 "
 "to disable Caching."
 
-#: views/admin.php:27
+#: views/admin.php:28
 msgid "Cache clear"
 msgstr "Remove cached data"
 
-#: views/admin.php:29
+#: views/admin.php:30
 msgid "Cache cleared"
 msgstr "Just cleared cached results!"
 
-#: views/admin.php:33
+#: views/admin.php:34
 msgid "Cache clear description"
 msgstr ""
 "To remove all cached search results <a href=\"plugins.php?page=smart-"
 "search&clear=1\">click here</a>"
 
-#: views/admin.php:38
+#: views/admin.php:39
 msgid "Force domain title"
 msgstr "Override \"site:\" domain context"
 
-#: views/admin.php:40
+#: views/admin.php:41
 msgid "Context domain placeholder"
 msgstr "another.domain.com"
 
-#: views/admin.php:43
+#: views/admin.php:44
 #, php-format
 msgid "Force domain context %s"
 msgstr ""
@@ -103,22 +110,22 @@ msgstr ""
 "used as the search context. <br>Useful if you are using a local dump of your "
 "online indexed content"
 
-#: views/admin.php:51
+#: views/admin.php:52
 msgid "No results url title"
 msgstr "Nothing found redirect"
 
-#: views/admin.php:53
+#: views/admin.php:54
 msgid "No results url placeholder"
 msgstr "http://retry.example.com"
 
-#: views/admin.php:55
+#: views/admin.php:56
 msgid "No results description"
 msgstr ""
 "You could use a custom endpoint url to handle searches without any results. "
 "<br>Search sentence will be appendend to this url as <strong>"
 "\"query=sentence</strong>\". Leave it blank for default"
 
-#: views/admin.php:62
+#: views/admin.php:63
 msgid "Save Changes"
 msgstr "Save Changes"
 

@@ -119,7 +119,13 @@
 		 $search = SmartSearch::get_instance();
 		 $no_results_url = $search->config['search_providers'][$this->router_name]['no_results_url'];
 		 if(!empty($no_results_url)) {
-		     wp_redirect($no_results_url . '?query=' . $this->get_search_string());
+		     if(preg_match("/\?.*$/", $no_results_url)) {
+			 wp_redirect($no_results_url . '&query=' . $this->get_search_string());
+		     }
+		     else {
+			 wp_redirect($no_results_url . '?query=' . $this->get_search_string());
+		     }
+		     
 		     exit;
 		 }
 		 else {
