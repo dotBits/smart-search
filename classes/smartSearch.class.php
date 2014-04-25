@@ -297,6 +297,7 @@
 	     {
 		 global $wpdb;		 
 		 $wpdb->query("DELETE FROM $wpdb->options WHERE option_id != 0 AND option_name LIKE '_transient_SSearch%'");
+		 $wpdb->query("DELETE FROM $wpdb->options WHERE option_id != 0 AND option_name LIKE '_transient_timeout_SSearch%'");
 	     }
          }
      }
