@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Smart Search\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/plugin-name\n"
-"POT-Creation-Date: 2013-08-04 18:46+0100\n"
-"PO-Revision-Date: 2014-04-23 13:25+0100\n"
-"Last-Translator: Cristian Ronzio <info@contesio.com>\n"
+"POT-Creation-Date: 2014-04-25 13:47+0100\n"
+"PO-Revision-Date: 2014-04-25 13:55+0100\n"
+"Last-Translator: Cristian Ronzio <cristian@contesio.com>\n"
 "Language-Team: Contesio <search@contesio.com>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
@@ -38,31 +38,38 @@ msgstr "Hours"
 msgid "Smart Search Options Page"
 msgstr "Smart Search Options Page"
 
-#: classes/smartSearch.class.php:253
+#: classes/smartSearch.class.php:254
 msgid "Search Settings"
 msgstr "Smart Search Engine"
 
-#: views/admin.php:25
+#: views/admin.php:10
 msgid "API KEY title"
-msgstr "BING API KEY"
+msgstr "Microsoft BING API KEY"
 
-#: views/admin.php:28
+#: views/admin.php:13
 msgid "API KEY description"
 msgstr ""
-"Don't have an API key? <a href=\"https://datamarket.azure.com/dataset/bing/"
-"search\" target=\"_blank\">Get it here</a>"
+"Don't have an API key? <a href=\"https://datamarket.azure.com/account/keys\" "
+"target=\"_blank\">Get it here</a>"
 
-#: views/admin.php:32
+#: views/admin.php:13
+msgid "BING Plan description"
+msgstr ""
+"You need a BING Search API free plan at least. Go <a href=\"https://"
+"datamarket.azure.com/dataset/bing/search\" target=\"_blank\">here</a> to "
+"subscribe"
+
+#: views/admin.php:18
 msgid "Cache Expire title"
 msgstr "Cache Expiration time"
 
-#: views/admin.php:36
+#: views/admin.php:22
 msgid "Cache Expire description"
 msgstr ""
 "how often to refresh data from Bing Search Engine (in seconds). Set 0 to "
 "disable Caching."
 
-#: views/admin.php:42
+#: views/admin.php:28
 msgid "Save Changes"
 msgstr "Save Changes"
 
