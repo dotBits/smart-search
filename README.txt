@@ -1,4 +1,4 @@
-=== Smart Search Lite ===
+=== Smart Search ===
 Contributors: Contesio
 Donate link: http://example.com/
 Tags: search, archives

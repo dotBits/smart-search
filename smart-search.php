@@ -8,7 +8,7 @@
  * @copyright www.contesio.com
  *
  * @wordpress-plugin
- * Plugin Name: Smart Search LITE
+ * Plugin Name: Smart Search
  * Plugin URI:  http://www.contesio.com/wordpress-plugins/smart-search
  * Description: Enhance Wordpress search engine by replacing it with BING
  * Version:     1.0.0
