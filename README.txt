@@ -58,8 +58,10 @@ Once you have the Windows Account key and the basic plan active:
 
 = Why should I install this search goodness? =
 
+* You don't have to setup and mantain an indexing engine since Microsoft Bing crawls your website for you
 * Keep in mind that a large percentage of users, as the first act will scroll the page looking for a search input box - [Steve Krug]
-* Is not always easy to provide a lean navigation structure, especially when you have a deep content structure
+* Is not always easy to provide a lean navigation structure, especially when you have a deep content structure. <br>
+An efficient search and find approach leads to more page views.
 * Sooner or later, users will think "Let me find it" or "Let me see if is here". Allow them to do it well!
 * User experience is more pleasant if you can easily find what you need
 * A website with a good search engine gains reliability
@@ -71,6 +73,7 @@ Once you have the Windows Account key and the basic plan active:
 * Other plans over this threshold are competitive too
 * Bing search results always meet, like many others
 * This is the most competitive one I've been able to find out
+* However, Smart Search is flexible enough for developers who wants to use a different search provider
 
 == Screenshots ==
 
