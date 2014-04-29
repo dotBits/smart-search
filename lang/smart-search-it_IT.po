@@ -1,0 +1,155 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Smart Search\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/plugin-name\n"
+"POT-Creation-Date: 2014-04-25 18:39+0100\n"
+"PO-Revision-Date: 2014-04-29 17:58+0100\n"
+"Last-Translator: Cristian Ronzio <cristian.ronzio@gmail.com>\n"
+"Language-Team: Contesio <search@contesio.com>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-KeywordsList: __;_e;_n;_x;esc_html_e;esc_html__;esc_attr_e;"
+"esc_attr__;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_x:1,2c;_n:1,2\n"
+"X-Poedit-Basepath: ../\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: classes/smartSearch.class.php:149
+#, php-format
+msgid "%s plugin requires Wordpress %s. You are running %s"
+msgstr "%s plugin richiede Wordpress %s. Stai usando %s"
+
+#: classes/smartSearch.class.php:238
+msgid "Invalid Expire value"
+msgstr "La scadenza della cache deve essere un numero!"
+
+#: classes/smartSearch.class.php:239
+msgid "Cache disabled"
+msgstr "Cache disabilitata (sconsigliato)"
+
+#: classes/smartSearch.class.php:240
+msgid "Hours"
+msgstr "Ore"
+
+#: classes/smartSearch.class.php:253
+msgid "Smart Search Options Page"
+msgstr "Opzioni Smart Search"
+
+#: classes/smartSearch.class.php:254
+msgid "Search Settings"
+msgstr "Smart Search Engine"
+
+#: views/admin.php:4
+msgid "Plugin description admin"
+msgstr ""
+"Smart Search sostituisce il motore di ricerca predefinito di Wordpress "
+"usando le Microsoft Bing Search API.<br>I risultati vengono visualizzati "
+"nella pagina dei risultati di ricerca del templare attualmente in uso."
+
+#: views/admin.php:11
+msgid "API KEY title"
+msgstr "Microsoft BING API KEY"
+
+#: views/admin.php:13
+msgid "API KEY placeholder"
+msgstr "Incolla qui la chiave dell'account Microsoft Azure"
+
+#: views/admin.php:14
+msgid "API KEY description"
+msgstr ""
+"Non hai una chiave? <a href=\"https://datamarket.azure.com/account/keys\" "
+"target=\"_blank\">La trovi qui</a>"
+
+#: views/admin.php:14
+msgid "BING Plan description"
+msgstr ""
+"Avrai bisogno almeno di un piano gratuito BING Search API. <a href=\"https://"
+"datamarket.azure.com/dataset/bing/search\" target=\"_blank\">Vai qui</a> per "
+"attivarlo"
+
+#: views/admin.php:18
+msgid "Cache Expire title"
+msgstr "Durata della Cache"
+
+#: views/admin.php:22
+msgid "Cache Expire description"
+msgstr ""
+"quanto spesso i risultati ricevuti da Bing devono essere aggiornati (in "
+"secondi). Imposta 0 per disabilitare la cache"
+
+#: views/admin.php:28
+msgid "Cache clear"
+msgstr "Elimina dati in Cache"
+
+#: views/admin.php:30
+msgid "Cache cleared"
+msgstr "Dati in cache eliminati!"
+
+#: views/admin.php:34
+msgid "Cache clear description"
+msgstr ""
+"Per eliminare i dati in cache <a href=\"plugins.php?page=smart-"
+"search&clear=1\">clicca qui</a>"
+
+#: views/admin.php:39
+msgid "Force domain title"
+msgstr "Imposta \"site:\" contesto dominio"
+
+#: views/admin.php:41
+msgid "Context domain placeholder"
+msgstr "dominio.online.com"
+
+#: views/admin.php:44
+#, php-format
+msgid "Force domain context %s"
+msgstr ""
+"Predefinito su <strong>%s</strong>. Se imposti qui un dominio diverso, "
+"l'opzione verrà usata come contesto di ricerca. <br>Utile se l'istanza di "
+"Wordpress attuale usa una copia locale dei contenuti indicizzati online"
+
+#: views/admin.php:52
+msgid "No results url title"
+msgstr "Reindirizzamento nessun risultato"
+
+#: views/admin.php:54
+msgid "No results url placeholder"
+msgstr "http://www.riprova.example.com"
+
+#: views/admin.php:56
+msgid "No results description"
+msgstr ""
+"Potresti usare una url personalizzata per gestire le ricerche che non "
+"producono alcun risultato. <br>La frase di ricerca verrà posta in fondo come "
+"<strong>\"query=frase ricerca</strong>\". Lascia vuoto per impostazione "
+"predefinita"
+
+#: views/admin.php:63
+msgid "Save Changes"
+msgstr "Salva Impostazioni"
+
+#~ msgid ""
+#~ "You can set any domain here to ovverride %s and it will be used as the "
+#~ "search context. Useful if you are using a local dump of your online "
+#~ "(indexed) content"
+#~ msgstr ""
+#~ "You can set any domain here to override %s and it will be used as the "
+#~ "search context. Useful if you are using a local dump of your online "
+#~ "(indexed) content"
+
+#~ msgid "Override %s domain context"
+#~ msgstr "Override %s domain context"
+
+#, fuzzy
+#~ msgid "Custom domain description"
+#~ msgstr ""
+#~ "You need a BING Search API free plan at least. Go <a href=\"https://"
+#~ "datamarket.azure.com/dataset/bing/search\" target=\"_blank\">here</a> to "
+#~ "subscribe"
+
+#~ msgid "API KEY not found"
+#~ msgstr ""
+#~ "SmartSearch plugin was unable to use your API KEY. Fix this by setting a "
+#~ "valid API KEY in the plugin's settings"

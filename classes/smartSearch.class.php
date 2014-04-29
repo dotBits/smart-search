@@ -153,13 +153,15 @@
          $options_transient = 'bing-search-options';
          if (false === ( $plugin_options = get_transient( $options_transient ) ))
          {
-             // It wasn't there, so regenerate the data and save the transient
+             // It wasn't there, so regenerate the data and save the transient @TODO ambiguos: should be the same as config.php
              $plugin_options['search_providers'] = array(
                      'bing' => array(
                              'base_uri' => 'https://api.datamarket.azure.com/Bing/Search/v1/Web?$format=json',
                              'API_KEY' => '',
                              'max_result' => 10,
-                             'cache_expire' => 60*60*24
+                             'cache_expire' => 60*60*24,
+			     'context_domain' => '',
+			     'no_results_url' => ''
                      )
              );
              $plugin_options['default_search_engine'] = 'bing';
@@ -266,16 +268,12 @@
      public function display_plugin_admin_page()
      {         
          $options = $this->get_config();
-	 $provider = $options['search_providers']['bing'];
-	 $keys = array('API_KEY', 'cache_expire', 'context_domain', 'no_results_url');
-	 $data = array();
-	 foreach ($keys as $key) {
-	     if (array_key_exists($key, $provider)) {
-		 $data[$key] = $provider[$key];
-	     }
-	 }
-
-	 render_view(PLUGIN_PATH . '/views/admin.php', $data);
+         $data['API_KEY'] = $options['search_providers']['bing']['API_KEY'];
+         $data['cache_expire'] = $options['search_providers']['bing']['cache_expire'];
+	 $data['context_domain'] = $options['search_providers']['bing']['context_domain'];
+	 $data['no_results_url'] = $options['search_providers']['bing']['no_results_url'];
+         
+         render_view(PLUGIN_PATH . '/views/admin.php', $data);
      }
      
      /**

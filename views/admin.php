@@ -60,7 +60,7 @@
                 
             </tbody>
         </table>
-        <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="<?php _e('Save Changes') ?>"></p>
+        <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="<?php _e('Save Changes', PLUGIN_TXT_DOMAIN) ?>"></p>
     </form>
 
 </div>
