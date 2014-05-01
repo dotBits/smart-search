@@ -1,6 +1,6 @@
 === Smart Search ===
 Contributors: Contesio
-Donate link: http://example.com/
+Donate link: http://www.contesio.com/wordpress-plugins/smart-search-pro
 Tags: search, archives
 Requires at least: 3.5.1
 Tested up to: 3.9
@@ -15,7 +15,7 @@ Results are displayed according to your current theme.
 
 Providing a search engine is a very complex subject if you aim to handle topics like relevance, semantics, performances and so on.
 
-Smart Search enhance the Wordpress search engine by querying Microsoft Bing using its Search API. <br>
+Smart Search enhance the Wordpress search engine by querying Microsoft Bing and its Search API. <br>
 The search query is performed in the context of your website url, as you type in the http://bing.com search input like so:
 
 *site:http://www.yourblog.com find this or that*
@@ -45,12 +45,15 @@ Once you have the Windows Account key and the basic plan active:
 1. Upload `smart-search` folder to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Under the Plugins menu click on BING Search Engine or visit http://yourblog.com/wp-admin/plugins.php?page=smart-search
-1. Fill in the only 2 options you see there:
-	* Insert the Windows Account Key you've obtained from the link above
+1. Fill in the settings you see there:
+	* Insert the Windows Account Key you've obtained from the link above (this is the only one required)
 	* Increase or decrease the cache duration for search results
+	* You can set a different domain to be used as the search context, eg: "another.domain.com" will be used to search like so: "site:another.domain.com the search query"
+	* You can also customize the endpoint url which will be used when search results are empty
 1. Be sure that your blog is already indexed by http://bing.com typing site:http://yourblog.com in the search input
 1. You're now able to search through your posts:
- 	* by using <?php get_search_form(); ?> that will display searchform.php in your Theme or the WP built-in form
+	* by filling your theme's search input box
+ 	* if your theme doesn't have a search form, use <?php get_search_form(); ?>: it will display the content of searchform.php in your Theme or the WP built-in form if this file is missing
  	* or simply by URL: _http://yourblog.com?s=sentence_
 
 
@@ -77,11 +80,7 @@ An efficient search and find approach leads to more page views.
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. Settings Page
 
 == Changelog ==
 
