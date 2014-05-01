@@ -44,7 +44,7 @@ Once you have the Windows Account key and the basic plan active:
 
 1. Upload `smart-search` folder to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Under the Plugins menu click on BING Search Engine or visit http://yourblog.com/wp-admin/plugins.php?page=smart-search
+1. Under the Plugins menu click on "Smart Search Engine" or visit http://yourblog.com/wp-admin/plugins.php?page=smart-search
 1. Fill in the settings you see there:
 	* Insert the Windows Account Key you've obtained from the link above (this is the only one required)
 	* Increase or decrease the cache duration for search results
