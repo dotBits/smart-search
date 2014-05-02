@@ -33,10 +33,13 @@ If this is your way and fits your needs, you could consider [Smart Search Pro][4
 
 **Note:** *your blog content must be indexed by BING in order to see the matching result set.*
 
+To get in touch with me you can [drop me an email][5]
+
 [1]: https://datamarket.azure.com/account/keys "Create Windows Account key"
 [2]: https://datamarket.azure.com/dataset/bing/search "Activate your Bing Search API plan"
 [3]: https://datamarket.azure.com/dataset/8818F55E-2FE5-4CE3-A617-0B8BA8419F65 "Bing Search API | Web Results only plan"
 [4]: http://www.contesio.com/wordpress-plugins/smart-search-pro "Go for Smart Search Pro"
+[5]: mailto:cristian@contesio.com "Contact Smart Search developer"
 
 == Installation ==
 
@@ -46,7 +49,7 @@ Once you have the Windows Account key and the basic plan active:
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Under the Plugins menu click on "Smart Search Engine" or visit http://yourblog.com/wp-admin/plugins.php?page=smart-search
 1. Adjust your settings:
-	* Insert the Windows Account Key you've obtained from the link above (this is the only one required)
+	* Insert the Windows Account Key you've obtained from the link in the "Description" section (this is the only one required)
 	* Increase or decrease the cache lifetime to store search results and save your transiaction amount
 	* You can set a different domain to be used as the search context, eg: "another.domain.com" will be used to search like so: "site:another.domain.com the search query"
 	* You can also customize the endpoint url which will be used when search results are empty
