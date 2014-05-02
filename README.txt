@@ -1,4 +1,4 @@
-=== Smart Search ===
+=== Smart Search Engine ===
 Contributors: Contesio
 Donate link: http://www.contesio.com/wordpress-plugins/smart-search-pro
 Tags: search, archives
@@ -8,7 +8,7 @@ Stable tag: 0.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Smart Search replace the native Wordpress search engine using the Microsoft Bing Search API.
+Smart Search replaces the native Wordpress search engine using the Microsoft Bing Search API.
 Results are displayed according to your current theme.
 
 == Description ==
@@ -45,16 +45,16 @@ Once you have the Windows Account key and the basic plan active:
 1. Upload `smart-search` folder to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Under the Plugins menu click on "Smart Search Engine" or visit http://yourblog.com/wp-admin/plugins.php?page=smart-search
-1. Fill in the settings you see there:
+1. Adjust your settings:
 	* Insert the Windows Account Key you've obtained from the link above (this is the only one required)
-	* Increase or decrease the cache duration for search results
+	* Increase or decrease the cache lifetime to store search results and save your transiaction amount
 	* You can set a different domain to be used as the search context, eg: "another.domain.com" will be used to search like so: "site:another.domain.com the search query"
 	* You can also customize the endpoint url which will be used when search results are empty
 1. Be sure that your blog is already indexed by http://bing.com typing site:http://yourblog.com in the search input
 1. You're now able to search through your posts:
 	* by filling your theme's search input box
- 	* if your theme doesn't have a search form, use <?php get_search_form(); ?>: it will display the content of searchform.php in your Theme or the WP built-in form if this file is missing
- 	* or simply by URL: _http://yourblog.com?s=sentence_
+ 	* if your theme doesn't have a search form use `<?php get_search_form(); ?>`, it will display the content of searchform.php in your Theme or the WP built-in form if this file is missing
+ 	* or simply by URL: _http://yourblog.com?s=sentence to search for_
 
 
 == Frequently Asked Questions ==
