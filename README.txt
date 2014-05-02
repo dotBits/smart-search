@@ -1,6 +1,6 @@
 === Smart Search Engine ===
 Contributors: Contesio
-Donate link: http://www.contesio.com/wordpress-plugins/smart-search-pro
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3BZF85K9HJ8QJ
 Tags: search, archives
 Requires at least: 3.5.1
 Tested up to: 3.9
