@@ -54,7 +54,7 @@ Once you have the Windows Account key and the basic plan active:
 1. You're now able to search through your posts:
 	* by filling your theme's search input box
  	* if your theme doesn't have a search form use `<?php get_search_form(); ?>`, it will display the content of searchform.php in your Theme or the WP built-in form if this file is missing
- 	* or simply by URL: _http://yourblog.com?s=sentence to search for_
+ 	* or simply by URL: _http://yourblog.com?s=sentence+to+search+for_
 
 
 == Frequently Asked Questions ==
