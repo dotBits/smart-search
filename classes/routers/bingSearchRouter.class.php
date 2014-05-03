@@ -154,9 +154,10 @@
      
      public function highlight_title($title, $id)
      {	 
-	 // l'obiettivo è discriminare quando si tratta di un posta che gestisco io oppure no 
+	 global $wp_query;
 	 static $counter = 0;
-	 if($counter > $this->max_result) {
+	 if($counter >= $wp_query->get('posts_per_page')) {
+	     remove_filter($tag, 'the_title', array($this, 'highlight_title'));
 	     return $title;
 	 }
 	 $counter++;
@@ -167,7 +168,7 @@
 	 $pattern_begin = "/\x{e000}/u";
 	 $pattern_end = "/\x{e001}/u";
 	 // get title specific render options
-	 $option_begin = '<span style="background-color:yellow">';
+	 $option_begin = '<span style=\'background-color:yellow\'>';
 	 $option_end = '</span>';
 	 
 	 $config['search_providers'][$this->router_name]['use_remote_title'] = true;
