@@ -22,8 +22,6 @@
          $search = SmartSearch::get_instance();
          $this->apikey = $search->config['search_providers'][$this->router_name]['API_KEY'];
          $this->init();
-	 
-	 add_action('smart_search_post_altering', array($this, 'apply_render_options'));
          
          // straight search
          $this->search();
@@ -121,7 +119,8 @@
 		 $wp_query->set('orderby', 'post__in');
 		 
 		 // Store next / prev if they are present
-		 add_action('smart_search_post_altering', array($this, 'set_next_prev_skip'));		 
+		 add_action('smart_search_post_altering', array($this, 'set_next_prev_skip'));	
+		 add_action('smart_search_post_altering', array($this, 'apply_render_options'));
 	     }
 	     else {
 		 // no results handler
@@ -145,16 +144,22 @@
          }
      }
      
-     public function apply_render_options($response)
+     public function apply_render_options()
      {
 	 // get render options and use conditionals to apply them
 	 
 	 // apply them by registering built-in filter
-	 add_filter('the_title', array($this, 'highlight_title'), 10, 2);
+	 add_filter('the_title', array($this, 'highlight_title'), 1, 2);	 
      }
      
      public function highlight_title($title, $id)
-     {
+     {	 
+	 // l'obiettivo è discriminare quando si tratta di un posta che gestisco io oppure no 
+	 static $counter = 0;
+	 if($counter > $this->max_result) {
+	     return $title;
+	 }
+	 $counter++;
 	 // @TODO wrap in a get_highlights_options()
 	 $search = SmartSearch::get_instance();
 	 $config = $search->get_config();
@@ -177,28 +182,7 @@
 	     // use WP post_title
 	     
 	 }
-	 // highlight if needed
-	 
-	 
-	 
-	 //preg_match_all($pattern_full, $this->found_item->Title, $matches);
-	 /*
-	 $output = "";
-	 $output = preg_replace($pattern_begin, "{{", $this->found_item->Title);
-	 $output = preg_replace($pattern_end, "}}", $output);
-	 
-	 preg_match_all("/{{(.*)}}/", $output, $matches);
-	 
-	 if(!empty($matches[0])) {
-	     $title = str_ireplace($matches[1][0], $option_begin . $matches[1][0] . $option_end, $title);
-	     //$title = preg_replace("/".$matches[1][0]."/", $option_begin . $matches[1][0] . $option_end, $title);
-	 }
-	 else {
-	     $title = $title;
-	 }
-	  * 
-	  */
-	 
+	 // see http://hakre.wordpress.com/2010/08/09/wp-plugins-how-to-remove-a-filter/
 	 return $title;
      }
      

@@ -91,7 +91,7 @@
              $this->get_cached_results( $query_results );
          }
          add_filter( 'found_posts', array($this, 'adjust_offset_pagination'), 1, 2 );
-         add_filter( 'posts_results', array($this, 'hook_posts_results'), 1, 2);
+         add_filter( 'posts_results', array($this, 'hook_posts_results'), 1, 2); 
      }     
      
      abstract protected function adjust_offset_pagination($found_posts, $query);
