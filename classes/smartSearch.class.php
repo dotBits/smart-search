@@ -288,6 +288,7 @@
              {
                  $data = $_POST;
                  $options = $this->get_config();
+		 // @TODO use $this->router_name instead of 'bing'
                  $options['search_providers']['bing']['API_KEY'] = $data['API_KEY'];
                  $options['search_providers']['bing']['cache_expire'] = $data['cache_expire'];
 		 $options['search_providers']['bing']['context_domain'] = $data['context_domain'];

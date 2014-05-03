@@ -12,6 +12,9 @@
      
      private $apikey = null;
      
+     // class visibility for result set cursor
+     private $items_found = array();
+     
      function __construct()
      {
          parent::__construct();         
@@ -19,6 +22,8 @@
          $search = SmartSearch::get_instance();
          $this->apikey = $search->config['search_providers'][$this->router_name]['API_KEY'];
          $this->init();
+	 
+	 add_action('smart_search_post_altering', array($this, 'apply_render_options'));
          
          // straight search
          $this->search();
@@ -39,6 +44,8 @@
              $n_results = '&$top=' . $this->max_result;
              $skip = ($this->skip > 0) ? '&$skip=' . $this->skip : "";
              $this->search_uri .= urlencode(" $this->domain'") . $n_results . $skip;
+	     // highlighting
+	     $this->search_uri .= "&Options='EnableHighlighting'";
              
              return true;
          }
@@ -74,11 +81,12 @@
              // Get the response from Bing
              $this->response = json_decode( file_get_contents( $this->search_uri, 0, $context ) );
              $results = (!empty( $this->response )) ? $this->response->d->results : array();
-
+	     
              $this->matched_post_ids = array();
 	     // if context_domain overrides adjust match accordingly
 	     $custom_domain = $search->config['search_providers'][$this->router_name]['context_domain'];
              foreach ($results as $result) {
+		 
 		 if (!empty($custom_domain)) {
 		     $post_url = str_replace($custom_domain, str_replace(array("http://", "https://"), "", site_url()), $result->Url);
 		 }
@@ -89,6 +97,7 @@
                  if ($post_id > 0)
                  {
                      array_push( $this->matched_post_ids, $post_id );
+		     $this->items_found[$post_id] = $result;
                  }
              }
              return array_unique( $this->matched_post_ids );
@@ -110,9 +119,9 @@
 	     if (!empty($this->matched_post_ids)) {		 
 		 $wp_query->set('post__in', $this->matched_post_ids);
 		 $wp_query->set('orderby', 'post__in');
-
+		 
 		 // Store next / prev if they are present
-		 add_action('smart_search_post_altering', array($this, 'set_next_prev_skip'));
+		 add_action('smart_search_post_altering', array($this, 'set_next_prev_skip'));		 
 	     }
 	     else {
 		 // no results handler
@@ -134,6 +143,63 @@
 	     }
              
          }
+     }
+     
+     public function apply_render_options($response)
+     {
+	 // get render options and use conditionals to apply them
+	 
+	 // apply them by registering built-in filter
+	 add_filter('the_title', array($this, 'highlight_title'), 10, 2);
+     }
+     
+     public function highlight_title($title, $id)
+     {
+	 // @TODO wrap in a get_highlights_options()
+	 $search = SmartSearch::get_instance();
+	 $config = $search->get_config();
+	 // Bing specific boundaries
+	 $pattern_begin = "/\x{e000}/u";
+	 $pattern_end = "/\x{e001}/u";
+	 // get title specific render options
+	 $option_begin = '<span style="background-color:yellow">';
+	 $option_end = '</span>';
+	 
+	 $config['search_providers'][$this->router_name]['use_remote_title'] = true;
+	 if($config['search_providers'][$this->router_name]['use_remote_title'] == true)
+	 {
+	     // crawled title
+	     $title = preg_replace($pattern_begin, $option_begin, $this->items_found[$id]->Title);
+	     $title = preg_replace($pattern_end, $option_end, $title);
+	 }
+	 else
+	 {
+	     // use WP post_title
+	     
+	 }
+	 // highlight if needed
+	 
+	 
+	 
+	 //preg_match_all($pattern_full, $this->found_item->Title, $matches);
+	 /*
+	 $output = "";
+	 $output = preg_replace($pattern_begin, "{{", $this->found_item->Title);
+	 $output = preg_replace($pattern_end, "}}", $output);
+	 
+	 preg_match_all("/{{(.*)}}/", $output, $matches);
+	 
+	 if(!empty($matches[0])) {
+	     $title = str_ireplace($matches[1][0], $option_begin . $matches[1][0] . $option_end, $title);
+	     //$title = preg_replace("/".$matches[1][0]."/", $option_begin . $matches[1][0] . $option_end, $title);
+	 }
+	 else {
+	     $title = $title;
+	 }
+	  * 
+	  */
+	 
+	 return $title;
      }
      
      /**
