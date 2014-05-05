@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Smart Search\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/plugin-name\n"
-"POT-Creation-Date: 2014-04-25 18:39+0100\n"
-"PO-Revision-Date: 2014-04-30 11:33+0100\n"
+"POT-Creation-Date: 2014-05-05 18:16+0100\n"
+"PO-Revision-Date: 2014-05-05 18:22+0100\n"
 "Last-Translator: Cristian Ronzio <cristian.ronzio@gmail.com>\n"
 "Language-Team: Contesio <search@contesio.com>\n"
 "Language: en\n"
@@ -22,23 +22,23 @@ msgstr ""
 msgid "%s plugin requires Wordpress %s. You are running %s"
 msgstr "%s plugin richiede Wordpress %s. Stai usando %s"
 
-#: classes/smartSearch.class.php:238
+#: classes/smartSearch.class.php:259
 msgid "Invalid Expire value"
 msgstr "La scadenza della cache deve essere un numero!"
 
-#: classes/smartSearch.class.php:239
+#: classes/smartSearch.class.php:260
 msgid "Cache disabled"
 msgstr "Cache disabilitata (sconsigliato)"
 
-#: classes/smartSearch.class.php:240
+#: classes/smartSearch.class.php:261
 msgid "Hours"
 msgstr "Ore"
 
-#: classes/smartSearch.class.php:253
+#: classes/smartSearch.class.php:274
 msgid "Smart Search Options Page"
 msgstr "Opzioni Smart Search"
 
-#: classes/smartSearch.class.php:254
+#: classes/smartSearch.class.php:275
 msgid "Search Settings"
 msgstr "Smart Search Engine"
 
@@ -127,7 +127,71 @@ msgstr ""
 "parametro GET <strong>\"query=frase ricerca</strong>\". Lascia vuoto per "
 "predefinito"
 
-#: views/admin.php:63
+#: views/admin.php:66
+msgid "Display Options"
+msgstr "Opzioni di visualizzazione"
+
+#: views/admin.php:67
+msgid "Display Options description"
+msgstr "Personalizza il modo in cui vengono visualizzati i risultati"
+
+#: views/admin.php:72
+msgid "Text to use"
+msgstr "Testo da usare"
+
+#: views/admin.php:73
+msgid "Highlighted"
+msgstr "Enfasi"
+
+#: views/admin.php:74
+msgid "Occurrences background color"
+msgstr "Sfondo occorrenze trovate"
+
+#: views/admin.php:75
+msgid "Occurrences text color"
+msgstr "Colore testo occorrenze trovate"
+
+#: views/admin.php:78
+msgid "Post Title"
+msgstr "Titolo articolo"
+
+#: views/admin.php:82
+msgid "use_local_title"
+msgstr "usa titolo WP"
+
+#: views/admin.php:83
+msgid "use_remote_title"
+msgstr "usa titolo da BING"
+
+#: views/admin.php:89
+msgid "not_highlight_title"
+msgstr "Non evidenziato"
+
+#: views/admin.php:90
+msgid "highlight_title_with_color"
+msgstr "Evidenziato"
+
+#: views/admin.php:102
+msgid "Post Excerpt"
+msgstr "Estratto articolo"
+
+#: views/admin.php:106
+msgid "use_local_excerpt"
+msgstr "Usa estratto WP"
+
+#: views/admin.php:107
+msgid "use_remote_excerpt"
+msgstr "usa estratto da BING"
+
+#: views/admin.php:113
+msgid "not_highlight_excerpt"
+msgstr "Non evidenziato"
+
+#: views/admin.php:114
+msgid "highlight_excerpt_with_color"
+msgstr "Evidenziato"
+
+#: views/admin.php:128
 msgid "Save Changes"
 msgstr "Salva Impostazioni"
 

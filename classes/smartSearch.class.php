@@ -151,23 +151,42 @@
          }
          // set default options if needed
          $options_transient = 'bing-search-options';
-         if (false === ( $plugin_options = get_transient( $options_transient ) ))
+	 $plugin_options = get_transient( $options_transient );
+	 $def_plugin_options['search_providers'] = array(
+		 'bing' => array(
+			 'base_uri' => 'https://api.datamarket.azure.com/Bing/Search/v1/Web?$format=json',
+			 'API_KEY' => '',
+			 'max_result' => 10, // @TODO unused
+			 'cache_expire' => 60 * 60 * 24,
+			 'context_domain' => '',
+			 'no_results_url' => '',
+			 'use_remote_title' => false,
+			 'use_remote_excerpt' => false,
+			 'highlight_title' => true,
+			 'highlight_title_color' => 'yellow',
+			 'highlight_title_txt_color' => 'black',
+			 'highlight_excerpt' => true,
+			 'highlight_excerpt_color' => 'yellow',
+			 'highlight_excerpt_txt_color' => 'black',
+		 )
+	 );
+	 // @TODO estendere come si deve questo array
+	 $def_plugin_options['default_search_engine'] = 'bing';
+         if (!$plugin_options)
          {
              // It wasn't there, so regenerate the data and save the transient @TODO ambiguos: should be the same as config.php
-             $plugin_options['search_providers'] = array(
-                     'bing' => array(
-                             'base_uri' => 'https://api.datamarket.azure.com/Bing/Search/v1/Web?$format=json',
-                             'API_KEY' => '',
-                             'max_result' => 10,
-                             'cache_expire' => 60*60*24,
-			     'context_domain' => '',
-			     'no_results_url' => ''
-                     )
-             );
-             $plugin_options['default_search_engine'] = 'bing';
-             
-             set_transient( $options_transient, $plugin_options );
+             set_transient( $options_transient, $def_plugin_options );
          }
+	 else 
+	 {
+	     // we already have an options set. Keep valids and extend with new options
+	     foreach($def_plugin_options['search_providers']['bing'] as $opt_name => $value) {
+		 if(false === array_key_exists($opt_name, $plugin_options['search_providers']['bing'])) {
+		    $plugin_options['search_providers']['bing'][$opt_name] = $value;
+		 }
+	     }
+	     set_transient( $options_transient, $plugin_options );
+	 }
      }
 
      /**
@@ -272,7 +291,15 @@
          $data['cache_expire'] = $options['search_providers']['bing']['cache_expire'];
 	 $data['context_domain'] = $options['search_providers']['bing']['context_domain'];
 	 $data['no_results_url'] = $options['search_providers']['bing']['no_results_url'];
-         
+	 $data['use_remote_title'] = $options['search_providers']['bing']['use_remote_title'];
+	 $data['use_remote_excerpt'] = $options['search_providers']['bing']['use_remote_excerpt'];
+	 $data['highlight_title'] = $options['search_providers']['bing']['highlight_title'];
+	 $data['highlight_excerpt'] = $options['search_providers']['bing']['highlight_excerpt'];	
+	 $data['highlight_title_color'] = $options['search_providers']['bing']['highlight_title_color'];
+	 $data['highlight_title_txt_color'] = $options['search_providers']['bing']['highlight_title_txt_color'];
+	 $data['highlight_excerpt_color'] = $options['search_providers']['bing']['highlight_excerpt_color'];
+         $data['highlight_excerpt_txt_color'] = $options['search_providers']['bing']['highlight_excerpt_txt_color'];
+	 
          render_view(PLUGIN_PATH . '/views/admin.php', $data);
      }
      
@@ -288,12 +315,20 @@
              {
                  $data = $_POST;
                  $options = $this->get_config();
-		 // @TODO use $this->router_name instead of 'bing'
+		 
                  $options['search_providers']['bing']['API_KEY'] = $data['API_KEY'];
                  $options['search_providers']['bing']['cache_expire'] = $data['cache_expire'];
 		 $options['search_providers']['bing']['context_domain'] = $data['context_domain'];
 		 $options['search_providers']['bing']['no_results_url'] = $data['no_results_url'];
-                 
+		 $options['search_providers']['bing']['use_remote_title'] = $data['use_remote_title'];
+		 $options['search_providers']['bing']['use_remote_excerpt'] = $data['use_remote_excerpt'];
+		 $options['search_providers']['bing']['highlight_title'] = $data['highlight_title'];
+		 $options['search_providers']['bing']['highlight_excerpt'] = $data['highlight_excerpt'];
+		 $options['search_providers']['bing']['highlight_title_color'] = $data['highlight_title_color'];
+		 $options['search_providers']['bing']['highlight_title_txt_color'] = $data['highlight_title_txt_color'];
+		 $options['search_providers']['bing']['highlight_excerpt_color'] = $data['highlight_excerpt_color'];
+                 $options['search_providers']['bing']['highlight_excerpt_txt_color'] = $data['highlight_excerpt_txt_color'];
+		 
                  set_transient('bing-search-options', $options);
              }
 	     if(!empty($_GET['clear'])) 

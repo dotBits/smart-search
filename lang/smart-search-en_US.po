@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Smart Search\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/plugin-name\n"
-"POT-Creation-Date: 2014-04-25 18:39+0100\n"
-"PO-Revision-Date: 2014-04-25 18:40+0100\n"
-"Last-Translator: Cristian Ronzio <cristian@contesio.com>\n"
+"POT-Creation-Date: 2014-05-05 18:06+0100\n"
+"PO-Revision-Date: 2014-05-05 18:15+0100\n"
+"Last-Translator: Cristian Ronzio <cristian.ronzio@gmail.com>\n"
 "Language-Team: Contesio <search@contesio.com>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.4\n"
+"X-Generator: Poedit 1.5.4\n"
 "X-Poedit-KeywordsList: __;_e;_n;_x;esc_html_e;esc_html__;esc_attr_e;"
 "esc_attr__;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_x:1,2c;_n:1,2\n"
 "X-Poedit-Basepath: ../\n"
@@ -22,23 +22,23 @@ msgstr ""
 msgid "%s plugin requires Wordpress %s. You are running %s"
 msgstr "%s plugin requires Wordpress %s. You are running %s"
 
-#: classes/smartSearch.class.php:238
+#: classes/smartSearch.class.php:259
 msgid "Invalid Expire value"
 msgstr "Cache expire must contain numbers only!"
 
-#: classes/smartSearch.class.php:239
+#: classes/smartSearch.class.php:260
 msgid "Cache disabled"
 msgstr "Cache is disabled (not recommended)"
 
-#: classes/smartSearch.class.php:240
+#: classes/smartSearch.class.php:261
 msgid "Hours"
 msgstr "Hours"
 
-#: classes/smartSearch.class.php:253
+#: classes/smartSearch.class.php:274
 msgid "Smart Search Options Page"
 msgstr "Smart Search Options Page"
 
-#: classes/smartSearch.class.php:254
+#: classes/smartSearch.class.php:275
 msgid "Search Settings"
 msgstr "Smart Search Engine"
 
@@ -125,7 +125,71 @@ msgstr ""
 "<br>Search sentence will be appendend to this url as <strong>"
 "\"query=sentence</strong>\". Leave it blank for default"
 
-#: views/admin.php:63
+#: views/admin.php:66
+msgid "Display Options"
+msgstr "Display Options"
+
+#: views/admin.php:67
+msgid "Display Options description"
+msgstr "Customize the way search results are displayed"
+
+#: views/admin.php:72
+msgid "Text to use"
+msgstr "Text to use"
+
+#: views/admin.php:73
+msgid "Highlighted"
+msgstr "Emphasis"
+
+#: views/admin.php:74
+msgid "Occurrences background color"
+msgstr "Occurrences background color"
+
+#: views/admin.php:75
+msgid "Occurrences text color"
+msgstr "Occurrences text color"
+
+#: views/admin.php:78
+msgid "Post Title"
+msgstr "Post Title"
+
+#: views/admin.php:82
+msgid "use_local_title"
+msgstr "WP post title"
+
+#: views/admin.php:83
+msgid "use_remote_title"
+msgstr "BING result title"
+
+#: views/admin.php:89
+msgid "not_highlight_title"
+msgstr "Do not highlight"
+
+#: views/admin.php:90
+msgid "highlight_title_with_color"
+msgstr "Highlighted"
+
+#: views/admin.php:102
+msgid "Post Excerpt"
+msgstr "Post Excerpt"
+
+#: views/admin.php:106
+msgid "use_local_excerpt"
+msgstr "WP post excerpt"
+
+#: views/admin.php:107
+msgid "use_remote_excerpt"
+msgstr "BING result description"
+
+#: views/admin.php:113
+msgid "not_highlight_excerpt"
+msgstr "Do not highlight"
+
+#: views/admin.php:114
+msgid "highlight_excerpt_with_color"
+msgstr "Highlighted"
+
+#: views/admin.php:128
 msgid "Save Changes"
 msgstr "Save Changes"
 

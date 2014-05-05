@@ -81,7 +81,6 @@
       */
      protected function search()
      {
-         //delete_transient( $this->transient );
          if (false === ( $query_results = get_transient( $this->transient ) ))
          {
              $this->get_remote_results();
@@ -92,10 +91,13 @@
          }
          add_filter( 'found_posts', array($this, 'adjust_offset_pagination'), 1, 2 );
          add_filter( 'posts_results', array($this, 'hook_posts_results'), 1, 2); 
+	 
+	 do_action( 'smart_search_render' );
+	 
      }     
      
      abstract protected function adjust_offset_pagination($found_posts, $query);
-     abstract protected function hook_posts_results($posts, $query);
+     abstract protected function hook_posts_results($posts, $query); // @TODO can't see the need anymore
      abstract protected function handle_skip();
 
 
@@ -114,6 +116,7 @@
          if($expiration > 0) {
              set_transient( $this->transient, $wp_query, $expiration );
          }
+	 add_action('wp_footer', function() { echo '<!-- Smart Search Debug: Got fresh query -->'; });
      }
      
      private function get_cached_results(WP_Query $cached_query)
@@ -124,10 +127,15 @@
          $wp_query->set( 'post__in', $cached_query->get( 'post__in' ) );
          $wp_query->set( 'orderby', $cached_query->get( 'orderby' ) );
          $wp_query->set( 'skipped_on_page', $cached_query->get( 'skipped_on_page' ) );
+	 $wp_query->set('smart_search_found_items', $cached_query->get('smart_search_found_items'));
 
          $next = $cached_query->get( 'skip_next_url' );
          if (!empty( $next ))
              $wp_query->set( 'skip_next_url', $next );
+	 
+	 add_action('smart_search_render', array($this, 'apply_render_options'));
+	 
+	 add_action('wp_footer', function() { echo '<!-- Smart Search Debug: Got cached query -->'; });
      }
 
      /**
@@ -296,5 +304,7 @@
       * a concrete implementation is required to define cache key
       */
      abstract protected function set_transient();
+     
+     abstract public function apply_render_options();
  
  }

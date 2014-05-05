@@ -12,9 +12,6 @@
      
      private $apikey = null;
      
-     // class visibility for result set cursor
-     private $items_found = array();
-     
      function __construct()
      {
          parent::__construct();         
@@ -35,14 +32,19 @@
 
      protected function set_search_uri()
      {
-         if (!empty( $this->search_string ))
+	 global $wp_query;
+	 
+	 $this->max_result = get_option('posts_per_page');
+	 
+	 if (!empty( $this->search_string ))
          {
              $this->search_uri .= "&Query='" . urlencode(urldecode($this->search_string));
              $this->domain = 'site:' . $this->context_domain;
-             $n_results = '&$top=' . $this->max_result;
+	     
+             
              $skip = ($this->skip > 0) ? '&$skip=' . $this->skip : "";
-             $this->search_uri .= urlencode(" $this->domain'") . $n_results . $skip;
-	     // highlighting
+             $this->search_uri .= urlencode(" $this->domain'") . $skip;
+	     // highlighting @TODO check if needed
 	     $this->search_uri .= "&Options='EnableHighlighting'";
              
              return true;
@@ -66,21 +68,26 @@
          if (!empty( $this->apikey ))
          {
 	     $search = SmartSearch::get_instance();
-             // Encode the credentials and create the stream context.
-             $auth = base64_encode( $this->apikey . ':' . $this->apikey );
-             $data = array(
-                     'http' => array(
-                             'request_fulluri' => true,
-                             // ignore_errors can help debug – remove for production. This option added in PHP 5.2.10
-                             'ignore_errors' => false,
-                             'header' => "Authorization: Basic $auth")
-             );
-             $context = stream_context_create( $data );
-             // Get the response from Bing
-             $this->response = json_decode( file_get_contents( $this->search_uri, 0, $context ) );
-             $results = (!empty( $this->response )) ? $this->response->d->results : array();
+	     
+	     $ch = curl_init();
+	     curl_setopt($ch, CURLOPT_URL, $this->search_uri);
+	     curl_setopt($ch, CURLOPT_HEADER, false);
+	     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	     curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
+	     //curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
+	     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+	     curl_setopt($ch, CURLOPT_USERPWD, $this->apikey . ":" . $this->apikey);
+
+	     $json = curl_exec($ch);
+	     curl_close($ch);
+
+	     $this->response = json_decode($json);
+	     $results = (!empty( $this->response )) ? $this->response->d->results : array();	     
 	     
              $this->matched_post_ids = array();
+	     // creates a reference for post-processing operations
+	     $wp_query->set('smart_search_found_items', array());
 	     // if context_domain overrides adjust match accordingly
 	     $custom_domain = $search->config['search_providers'][$this->router_name]['context_domain'];
              foreach ($results as $result) {
@@ -92,10 +99,13 @@
 		     $post_url = $result->Url;
 		 }
                  $post_id = $this->search_post_id_from_url($post_url);
-                 if ($post_id > 0)
+                 if ($post_id)
                  {
                      array_push( $this->matched_post_ids, $post_id );
-		     $this->items_found[$post_id] = $result;
+		     // store matched result set as reference
+		     $shared_results = $wp_query->get('smart_search_found_items');
+		     $shared_results[$post_id] = $result;
+		     $wp_query->set('smart_search_found_items', $shared_results);
                  }
              }
              return array_unique( $this->matched_post_ids );
@@ -120,7 +130,7 @@
 		 
 		 // Store next / prev if they are present
 		 add_action('smart_search_post_altering', array($this, 'set_next_prev_skip'));	
-		 add_action('smart_search_post_altering', array($this, 'apply_render_options'));
+		 add_action('smart_search_render', array($this, 'apply_render_options'));
 	     }
 	     else {
 		 // no results handler
@@ -147,44 +157,121 @@
      public function apply_render_options()
      {
 	 // get render options and use conditionals to apply them
+	 $search = SmartSearch::get_instance();
+	 $config = $search->get_config();
+	 $ruoter_config = $config['search_providers'][$this->router_name];
 	 
-	 // apply them by registering built-in filter
-	 add_filter('the_title', array($this, 'highlight_title'), 1, 2);	 
+	 
+	 // apply them by registering built-in filter 
+	 // @TODO conditional upon option
+	 if($ruoter_config['highlight_title']) {
+	    add_filter('the_title', array($this, 'highlight_title'), 10, 2);
+	 }
+	 
+	 if($ruoter_config['highlight_excerpt']) {
+	    add_filter('the_excerpt', array($this, 'highlight_excerpt'));
+	 }
      }
      
      public function highlight_title($title, $id)
      {	 
 	 global $wp_query;
+	 
 	 static $counter = 0;
-	 if($counter >= $wp_query->get('posts_per_page')) {
-	     remove_filter($tag, 'the_title', array($this, 'highlight_title'));
+	 if($counter >= (int)$wp_query->post_count) {
+	     remove_filter('the_title', array($this, 'highlight_title'));
 	     return $title;
 	 }
 	 $counter++;
-	 // @TODO wrap in a get_highlights_options()
+
 	 $search = SmartSearch::get_instance();
 	 $config = $search->get_config();
+	 $ruoter_config = $config['search_providers'][$this->router_name];
+	 
 	 // Bing specific boundaries
 	 $pattern_begin = "/\x{e000}/u";
 	 $pattern_end = "/\x{e001}/u";
+	 $pattern_full = "/\x{e000}(.*)\x{e001}/u";
 	 // get title specific render options
-	 $option_begin = '<span style=\'background-color:yellow\'>';
+	 
+	 $option_begin = '<span class="ss_hlights_title" style="background-color:' .$ruoter_config['highlight_title_color']. ';color:'.$ruoter_config['highlight_title_txt_color'].'"\'>';
 	 $option_end = '</span>';
 	 
-	 $config['search_providers'][$this->router_name]['use_remote_title'] = true;
-	 if($config['search_providers'][$this->router_name]['use_remote_title'] == true)
-	 {
+	 $shared_results = $wp_query->get('smart_search_found_items');
+	 
+	 if($config['search_providers'][$this->router_name]['use_remote_title']) // @TODO always use pattern_full
+	 {	     
 	     // crawled title
-	     $title = preg_replace($pattern_begin, $option_begin, $this->items_found[$id]->Title);
+	     $title = preg_replace($pattern_begin, $option_begin, $shared_results[$id]->Title);
 	     $title = preg_replace($pattern_end, $option_end, $title);
 	 }
 	 else
 	 {
 	     // use WP post_title
-	     
+	     $remote_title = $shared_results[$id]->Title;
+	     // get all highlightable words
+	     preg_match_all($pattern_full, $remote_title, $matches);
+	     if(!empty($matches[1])) 
+	     {
+		 foreach ($matches[1] as $word) 
+		 {		     
+		     $title = str_ireplace($word, $option_begin.$word.$option_end, $title);
+		 }
+	     }
 	 }
-	 // see http://hakre.wordpress.com/2010/08/09/wp-plugins-how-to-remove-a-filter/
+	 
 	 return $title;
+     }
+     
+     public function highlight_excerpt($excerpt)
+     {
+	 global $wp_query;
+	 
+	 static $counter = 0;
+	 if($counter >= (int)$wp_query->post_count) {
+	     remove_filter('the_excerpt', array($this, 'highlight_excerpt'));
+	     return $excerpt;
+	 }
+	 $counter++;
+	 
+	 $search = SmartSearch::get_instance();
+	 $config = $search->get_config();
+	 $ruoter_config = $config['search_providers'][$this->router_name];
+	 
+	 // Bing specific boundaries
+	 $pattern_begin = "/\x{e000}/u";
+	 $pattern_end = "/\x{e001}/u";
+	 $pattern_full = "/\x{e000}(.*)\x{e001}/u";
+	 // get title specific render options
+	 $option_begin = '<span class="ss_hlights_excerpt" style="background-color:' .$ruoter_config['highlight_excerpt_color']. ';color:'.$ruoter_config['highlight_excerpt_txt_color'].'"\'>';
+	 $option_end = '</span>';
+	 // needed since apply_filters doesn't pass it
+	 $id = get_the_ID();
+	 
+	 $shared_results = $wp_query->get('smart_search_found_items');
+	 
+	 if($config['search_providers'][$this->router_name]['use_remote_excerpt'])
+	 {	     
+	     // crawled excerpt
+	     $excerpt = preg_replace($pattern_begin, $option_begin, $shared_results[$id]->Description);
+	     $excerpt = preg_replace($pattern_end, $option_end, $excerpt);
+	 }
+	 else
+	 {
+	     // use WP post_excerpt
+	     $remote_excerpt = $shared_results[$id]->Description;
+	     // get all highlightable words
+	     preg_match_all($pattern_full, $remote_excerpt, $matches);
+	     if(!empty($matches[1])) 
+	     {
+		 foreach ($matches[1] as $word)
+		 {		     
+		     $excerpt = str_ireplace($word, $option_begin.$word.$option_end, $excerpt);
+		 }
+	     }
+	 }
+	 
+	 return $excerpt;
      }
      
      /**
@@ -207,7 +294,7 @@
      {
          if($query->is_main_query() && true === is_penultimate_page( $query ))
          {
-             $this->handle_skip();
+             //$this->handle_skip();
              remove_filter('posts_results', array($this, 'hook_posts_results'));
          }
          return $posts;
@@ -236,8 +323,9 @@
              $next_results = $this->set_matched_post_ids();
              if (!empty( $next_results ))
              {
-                 $wp_query->set( 'post__in', array_merge( $post_in, $next_results ) );
-                 $wp_query->set('skipped_on_page', $current_page);
+		 $next_results_match = array_merge( $post_in, $next_results );
+                 $wp_query->set( 'post__in', array_merge( $post_in, $next_results_match ) );
+                 $wp_query->set('skipped_on_page', $current_page);		 
                  // #cache_set to update with appended skip results
                  set_transient( $this->transient, $wp_query, $expiration );
              }
@@ -261,11 +349,14 @@
       */
      protected function set_transient()
      {
+	 global $wp_query;
+	 
          $string = $this->get_router_name()
-             . $this->search_string
-             . $this->domain
-             . $this->max_result
-             . $this->skip;
+             . '_s=' . $this->search_string
+             . '_d=' .  $this->domain
+             . '_n=' . $this->max_result
+	     . '_p=' . $wp_query->get('paged')
+             . '_sk=' . $this->skip;
 
          return $string;
      }

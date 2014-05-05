@@ -60,6 +60,71 @@
                 
             </tbody>
         </table>
+	
+	<hr>
+	
+	<h3><?php _e('Display Options', PLUGIN_TXT_DOMAIN) ?></h3>
+	<h4><?php _e('Display Options description', PLUGIN_TXT_DOMAIN) ?></h4>
+	<table class="form-table">
+            <tbody>
+		<tr valign="top">
+		    <th scope="col"><label for=""></label></th>
+		    <th scope="col"><label for=""><?php _e('Text to use', PLUGIN_TXT_DOMAIN) ?></label></th>
+		    <th scope="col"><label for=""><?php _e('Highlighted', PLUGIN_TXT_DOMAIN) ?></label></th>
+		    <th scope="col"><label for=""><?php _e('Occurrences background color', PLUGIN_TXT_DOMAIN) ?></label></th>
+		    <th scope="col"><label for=""><?php _e('Occurrences text color', PLUGIN_TXT_DOMAIN) ?></label></th>
+		</tr>
+		<tr valign="top">		    
+                    <th scope="row"><label for="use_remote_title"><?php _e('Post Title', PLUGIN_TXT_DOMAIN) ?></label></th>
+                    <td>
+			<?php $selected = $data['use_remote_title'] ? 'selected="selected"' : "" ?>
+			<select style="width: 100%" name="use_remote_title">
+			    <option value="0" <?php echo $selected ?>><?php _e('use_local_title', PLUGIN_TXT_DOMAIN) ?></option>
+			    <option value="1" <?php echo $selected ?>><?php _e('use_remote_title', PLUGIN_TXT_DOMAIN) ?></option>
+			</select>
+                    </td>
+		    <td>
+			<?php $selected = $data['highlight_title'] ? 'selected="selected"' : "" ?>
+			<select style="width: 100%" name="highlight_title">
+			    <option value="0" <?php echo $selected ?>><?php _e('not_highlight_title', PLUGIN_TXT_DOMAIN) ?></option>
+			    <option value="1" <?php echo $selected ?>><?php _e('highlight_title_with_color', PLUGIN_TXT_DOMAIN) ?></option>
+			</select>
+                    </td>
+		    <td>
+			<input type="text" name="highlight_title_color" value="<?php echo $data['highlight_title_color'] ?>" style="display:block">
+                    </td>
+		    <td>
+			<input type="text" name="highlight_title_txt_color" value="<?php echo $data['highlight_title_txt_color'] ?>" style="display:block">
+                    </td>
+                </tr>
+		
+		<tr valign="top">		    
+                    <th scope="row"><label for="use_remote_excerpt"><?php _e('Post Excerpt', PLUGIN_TXT_DOMAIN) ?></label></th>
+                    <td>
+			<?php $selected = $data['use_remote_excerpt'] ? 'selected="selected"' : "" ?>
+			<select style="width: 100%" name="use_remote_excerpt">
+			    <option value="0" <?php echo $selected ?>><?php _e('use_local_excerpt', PLUGIN_TXT_DOMAIN) ?></option>
+			    <option value="1" <?php echo $selected ?>><?php _e('use_remote_excerpt', PLUGIN_TXT_DOMAIN) ?></option>
+			</select>
+                    </td>
+		    <td>
+			<?php $selected = $data['highlight_excerpt'] ? 'selected="selected"' : "" ?>
+			<select style="width: 100%" name="highlight_excerpt">
+			    <option value="0" <?php echo $selected ?>><?php _e('not_highlight_excerpt', PLUGIN_TXT_DOMAIN) ?></option>
+			    <option value="1" <?php echo $selected ?>><?php _e('highlight_excerpt_with_color', PLUGIN_TXT_DOMAIN) ?></option>
+			</select>
+                    </td>
+		    <td>
+			<input type="text" name="highlight_excerpt_color" value="<?php echo $data['highlight_excerpt_color'] ?>" style="display:block">
+                    </td>
+		    <td>
+			<input type="text" name="highlight_excerpt_txt_color" value="<?php echo $data['highlight_excerpt_txt_color'] ?>" style="display:block">
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table>
+	
         <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="<?php _e('Save Changes', PLUGIN_TXT_DOMAIN) ?>"></p>
     </form>
 
