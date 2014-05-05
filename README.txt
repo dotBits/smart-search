@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: search, archives
 Requires at least: 3.5.1
 Tested up to: 3.9
-Stable tag: 0.9.1
+Stable tag: 0.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,8 +27,8 @@ In order to use it, you must have a valid [Windows Account key][1] and you will 
 Easy, simple and fast!
 If this is your way and fits your needs, you could consider [Smart Search Pro][4] and its extended features.
 
-**Note:** *your blog content must be indexed by BING in order to see the matching result set.* [Go here][6] to submit yuor site to Bing
-To get in touch with me you can [drop me an email][5]
+**Note:** *your blog content must be indexed by BING in order to see the matching result set.* [Go here][6] to submit yuor site to Bing. <br>
+Feel free to drop a [feedback here][6]: To get in touch with me you can [drop me an email][5] 
 
 = Features = 
 * Works with built-in post types. Custom post types are supported as well
@@ -44,6 +44,7 @@ To get in touch with me you can [drop me an email][5]
 [4]: http://www.contesio.com/wordpress-plugins/smart-search-pro "Go for Smart Search Pro"
 [5]: mailto:cristian@contesio.com "Contact Smart Search developer"
 [6]: http://www.bing.com/toolbox/submit-site-url "Start indexing your site with Bing"
+[7]: http://wordpress.org/support/view/plugin-reviews/smart-search "Review this plugin"
 
 == Installation ==
 
