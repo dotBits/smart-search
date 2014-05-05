@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: search, archives
 Requires at least: 3.5.1
 Tested up to: 3.9
-Stable tag: 0.9
+Stable tag: 0.9.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,28 +12,31 @@ Smart Search replaces the native Wordpress search engine using the Microsoft Bin
 Results are displayed according to your current theme.
 
 == Description ==
-
 Providing a search engine is a very complex subject if you aim to handle topics like relevance, semantics, performances and so on.
 
 Smart Search enhance the Wordpress search engine by querying Microsoft Bing and its Search API. <br>
 The search query is performed in the context of your website url, as you type in the http://bing.com search input like so:
 
 *site:http://www.yourblog.com find this or that*
-
+= Brief =
 URLs from the BING result set are converted by Smart Search to Wordpress post IDs, thus the display process is the same your theme implements for regular searches.<br>
-*Works with built-in post types. Custom post types are supported as well*
-
 You can also choose to cache search engine's results for a defined period of time, which will save your Transaction amount for the same search query.
 
 In order to use it, you must have a valid [Windows Account key][1] and you will need to activate at least the [free subscription here][3] or [here][2]
 
 Easy, simple and fast!
-
 If this is your way and fits your needs, you could consider [Smart Search Pro][4] and its extended features.
 
 **Note:** *your blog content must be indexed by BING in order to see the matching result set.* [Go here][6] to submit yuor site to Bing
-
 To get in touch with me you can [drop me an email][5]
+
+= Features = 
+* Works with built-in post types. Custom post types are supported as well
+* Highlight occurences in search results with custom background and text color
+* For post title and post excerpt, whether to display the Wordpress or the BING one
+* Define how long to store search results saving BING transaction amount for the same query
+* Custom endpoint for empty search results
+* Use a custom domain as the search context, useful to test local dumps
 
 [1]: https://datamarket.azure.com/account/keys "Create Windows Account key"
 [2]: https://datamarket.azure.com/dataset/bing/search "Activate your Bing Search API plan"
@@ -49,11 +52,14 @@ Once you have the Windows Account key and the basic plan active:
 1. Upload `smart-search` folder to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Under the Plugins menu click on "Smart Search Engine" or visit http://yourblog.com/wp-admin/plugins.php?page=smart-search
-1. Adjust your settings:
-	* Insert the Windows Account Key you've obtained from the link in the "Description" section (this is the only one required)
+1. Fill required settings:
+	* Insert the Windows Account Key you've obtained from the link in the "Description" section
+1. Adjust optional settings:
 	* Increase or decrease the cache lifetime to store search results and save your transaction amount
 	* You can set a different domain to be used as the search context, eg: "another.domain.com" will be used to search like so: "site:another.domain.com the search query"
 	* You can also customize the endpoint url which will be used when search results are empty
+	* Customize displayed text by choosing between WordPress or BING data
+	* Customize displayed text by typing your css colors
 1. Be sure that your blog is already indexed by http://bing.com typing site:http://yourblog.com in the search input
 1. You're now able to search through your posts:
 	* by filling your theme's search input box
@@ -87,6 +93,10 @@ An efficient search and find approach leads to more page views.
 1. Settings Page
 
 == Changelog ==
+
+= 0.9.1 =
+* Highligth occurrences
+* Use curl instead of file_get_contents
 
 = 0.9 =
 * First release with custom post types support

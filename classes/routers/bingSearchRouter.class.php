@@ -200,7 +200,7 @@
 	 $shared_results = $wp_query->get('smart_search_found_items');
 	 
 	 if($config['search_providers'][$this->router_name]['use_remote_title']) // @TODO always use pattern_full
-	 {	     
+	 {
 	     // crawled title
 	     $title = preg_replace($pattern_begin, $option_begin, $shared_results[$id]->Title);
 	     $title = preg_replace($pattern_end, $option_end, $title);
