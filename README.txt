@@ -8,18 +8,18 @@ Stable tag: 0.9.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Smart Search replaces the native Wordpress search engine using the Microsoft Bing Search API.
+Smart Search replaces the native WordPress search engine using the Microsoft Bing Search API.
 Results are displayed according to your current theme.
 
 == Description ==
 Providing a search engine is a very complex subject if you aim to handle topics like relevance, semantics, performances and so on.
 
-Smart Search enhance the Wordpress search engine by querying Microsoft Bing and its Search API. <br>
+Smart Search enhance the WordPress search engine by querying Microsoft Bing and its Search API. <br>
 The search query is performed in the context of your website url, as you type in the http://bing.com search input like so:
 
 *site:http://www.yourblog.com find this or that*
 = Brief =
-URLs from the BING result set are converted by Smart Search to Wordpress post IDs, thus the display process is the same your theme implements for regular searches.<br>
+URLs from the BING result set are converted by Smart Search to WordPress post IDs, thus the display process is the same your theme implements for regular searches.<br>
 You can also choose to cache search engine's results for a defined period of time, which will save your Transaction amount for the same search query.
 
 In order to use it, you must have a valid [Windows Account key][1] and you will need to activate at least the [free subscription here][3] or [here][2]
@@ -33,7 +33,7 @@ Feel free to drop a [feedback here][6]: To get in touch with me you can [drop me
 = Features = 
 * Works with built-in post types. Custom post types are supported as well
 * Highlight occurences in search results with custom background and text color
-* For post title and post excerpt, whether to display the Wordpress or the BING one
+* For post title and post excerpt, whether to display the WordPress or the BING one
 * Define how long to store search results saving BING transaction amount for the same query
 * Custom endpoint for empty search results
 * Use a custom domain as the search context, useful to test local dumps
@@ -41,10 +41,10 @@ Feel free to drop a [feedback here][6]: To get in touch with me you can [drop me
 [1]: https://datamarket.azure.com/account/keys "Create Windows Account key"
 [2]: https://datamarket.azure.com/dataset/bing/search "Activate your Bing Search API plan"
 [3]: https://datamarket.azure.com/dataset/8818F55E-2FE5-4CE3-A617-0B8BA8419F65 "Bing Search API | Web Results only plan"
-[4]: http://www.contesio.com/wordpress-plugins/smart-search-pro "Go for Smart Search Pro"
+[4]: http://www.contesio.com/WordPress-plugins/smart-search-pro "Go for Smart Search Pro"
 [5]: mailto:cristian@contesio.com "Contact Smart Search developer"
 [6]: http://www.bing.com/toolbox/submit-site-url "Start indexing your site with Bing"
-[7]: http://wordpress.org/support/view/plugin-reviews/smart-search "Review this plugin"
+[7]: http://WordPress.org/support/view/plugin-reviews/smart-search "Review this plugin"
 
 == Installation ==
 
@@ -105,4 +105,4 @@ An efficient search and find approach leads to more page views.
 == Upgrade Notice ==
 
 = 0.9 =
-* Join the new Wordpress search engine Era
+* Join the new WordPress search engine Era
