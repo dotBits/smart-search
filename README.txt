@@ -28,7 +28,7 @@ Easy, simple and fast!
 If this is your way and fits your needs, you could consider [Smart Search Pro][4] and its extended features.
 
 **Note:** *your blog content must be indexed by BING in order to see the matching result set.* [Go here][6] to submit yuor site to Bing. <br>
-Feel free to drop a [feedback here][6]: To get in touch with me you can [drop me an email][5] 
+Feel free to drop a [feedback here][7]: To get in touch with me you can [drop me an email][5] 
 
 = Features = 
 * Works with built-in post types. Custom post types are supported as well
@@ -41,10 +41,10 @@ Feel free to drop a [feedback here][6]: To get in touch with me you can [drop me
 [1]: https://datamarket.azure.com/account/keys "Create Windows Account key"
 [2]: https://datamarket.azure.com/dataset/bing/search "Activate your Bing Search API plan"
 [3]: https://datamarket.azure.com/dataset/8818F55E-2FE5-4CE3-A617-0B8BA8419F65 "Bing Search API | Web Results only plan"
-[4]: http://www.contesio.com/WordPress-plugins/smart-search-pro "Go for Smart Search Pro"
+[4]: http://www.contesio.com/wordpress-plugins/smart-search-pro "Go for Smart Search Pro"
 [5]: mailto:cristian@contesio.com "Contact Smart Search developer"
 [6]: http://www.bing.com/toolbox/submit-site-url "Start indexing your site with Bing"
-[7]: http://WordPress.org/support/view/plugin-reviews/smart-search "Review this plugin"
+[7]: http://wordpress.org/support/view/plugin-reviews/smart-search "Review this plugin"
 
 == Installation ==
 
