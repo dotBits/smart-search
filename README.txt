@@ -46,7 +46,7 @@ Feel free to give leave a [review here][7]. To get in touch with me you can [dro
 [1]: https://datamarket.azure.com/account/keys "Create Windows Account key"
 [2]: https://datamarket.azure.com/dataset/bing/search "Activate your Bing Search API plan"
 [3]: https://datamarket.azure.com/dataset/8818F55E-2FE5-4CE3-A617-0B8BA8419F65 "BING Search API | Web Results only plan"
-[4]: mailto:cristian@contesio.com?subject=Let me know about Smart Search Pro release "Get notified about Smart Search Pro"
+[4]: mailto:cristian@contesio.com "Get notified about Smart Search Pro"
 [5]: mailto:cristian@contesio.com "Contact Smart Search developer"
 [6]: http://www.bing.com/toolbox/submit-site-url "Start indexing your site with BING"
 [7]: http://wordpress.org/support/view/plugin-reviews/smart-search "Review this plugin"
