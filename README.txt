@@ -66,10 +66,12 @@ Once you have the Windows Account key and the basic plan active:
 	* You can also customize the endpoint url which will be used when search results are empty
 	* Customize displayed text by choosing between WordPress or BING data
 	* Customize highlight background and text color by using Web Colors http://en.wikipedia.org/wiki/Web_colors
-1. Be sure that your blog is already indexed by BING typing site:http://yourblog.com in the search input
+1. Be sure that your blog is already indexed by BING typing. Visit http://bing.com and type site:http://yourblog.com in the search input, you should see all indexed pages.
 1. You're now able to search through your posts:
 	* by filling your theme's search input box
- 	* if your theme doesn't have a search form use `<?php get_search_form(); ?>`, it will display the content of the searchform.php template in your Theme or the WP built-in form if this file is missing
+ 	* if your theme doesn't have a search form use 
+`<?php get_search_form(); ?>`
+it will display the content of the searchform.php template in your Theme or the WP built-in form if this file is missing
  	* or simply by URL: _http://yourblog.com?s=sentence+to+search+for_
 
 
