@@ -128,7 +128,6 @@
 		 $wp_query->set('post__in', $this->matched_post_ids);
 		 $wp_query->set('orderby', 'post__in');
 		 
-		 // Store next / prev if they are present
 		 add_action('smart_search_post_altering', array($this, 'set_next_prev_skip'));	
 		 add_action('smart_search_render', array($this, 'apply_render_options'));
 	     }
@@ -146,6 +145,7 @@
 		     exit;
 		 }
 		 else {
+		     // return an empty result set and let WP handle this
 		     $wp_query->set('post__in', array(0));
 		 }
 		 
@@ -162,8 +162,7 @@
 	 $ruoter_config = $config['search_providers'][$this->router_name];
 	 
 	 
-	 // apply them by registering built-in filter 
-	 // @TODO conditional upon option
+	 // apply them by registering built-in filter
 	 if($ruoter_config['highlight_title']) {
 	    add_filter('the_title', array($this, 'highlight_title'), 10, 2);
 	 }
@@ -192,8 +191,7 @@
 	 $pattern_begin = "/\x{e000}/u";
 	 $pattern_end = "/\x{e001}/u";
 	 $pattern_full = "/\x{e000}(.*)\x{e001}/u";
-	 // get title specific render options
-	 
+	 // get title specific render options	 
 	 $option_begin = '<span class="ss_hlights_title" style="background-color:' .$ruoter_config['highlight_title_color']. ';color:'.$ruoter_config['highlight_title_txt_color'].'"\'>';
 	 $option_end = '</span>';
 	 
@@ -245,7 +243,7 @@
 	 // get title specific render options
 	 $option_begin = '<span class="ss_hlights_excerpt" style="background-color:' .$ruoter_config['highlight_excerpt_color']. ';color:'.$ruoter_config['highlight_excerpt_txt_color'].'"\'>';
 	 $option_end = '</span>';
-	 // needed since apply_filters doesn't pass it
+	 // needed since apply_filters doesn't pass the post_id
 	 $id = get_the_ID();
 	 
 	 $shared_results = $wp_query->get('smart_search_found_items');
@@ -300,6 +298,7 @@
          return $posts;
      }
      
+     // unused
      protected function handle_skip()
      {
          global $wp_query;
@@ -332,6 +331,7 @@
          }
      }
      
+     // useless
      public function set_next_prev_skip($response)
      {
          if(!empty($response->d->results) && isset($response->d->__next))
