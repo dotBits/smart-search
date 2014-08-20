@@ -81,6 +81,9 @@
            $this->options = $this->option_handler->get_options();
           * 
           */
+	 if(is_admin())
+	     return $this;
+	 
          $this->set_config();
 
          // Load plugin text domain
@@ -99,7 +102,7 @@
 
          add_filter( 'generate_rewrite_rules', array($this, 'add_rewrite_rules') );
          add_filter( 'query_vars', array($this, 'define_query_vars') );
-
+	 
          add_action( 'pre_get_posts', array($this, 'route_request') );
          
      }
