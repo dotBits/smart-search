@@ -19,7 +19,7 @@
          $search = SmartSearch::get_instance();
          $this->apikey = $search->config['search_providers'][$this->router_name]['API_KEY'];
          $this->init();
-         
+	 
          // straight search
          $this->search();
      }
@@ -83,14 +83,18 @@
 	     curl_close($ch);
 
 	     $this->response = json_decode($json);
-	     $results = (!empty( $this->response )) ? $this->response->d->results : array();	     
+	     
+	     $results = array();
+	     if(!empty($this->response)) {
+		 $results = $this->response->d->results;
+	     }     
 	     
              $this->matched_post_ids = array();
 	     // creates a reference for post-processing operations
 	     $wp_query->set('smart_search_found_items', array());
 	     // if context_domain overrides adjust match accordingly
 	     $custom_domain = $search->config['search_providers'][$this->router_name]['context_domain'];
-             foreach ($results as $result) {
+             foreach ($results as $index => $result) {
 		 
 		 if (!empty($custom_domain)) {
 		     $post_url = str_replace($custom_domain, str_replace(array("http://", "https://"), "", site_url()), $result->Url);
@@ -98,6 +102,7 @@
 		 else {
 		     $post_url = $result->Url;
 		 }
+		 $post_url = urldecode($post_url);
                  $post_id = $this->search_post_id_from_url($post_url);
                  if ($post_id)
                  {
@@ -107,6 +112,10 @@
 		     $shared_results[$post_id] = $result;
 		     $wp_query->set('smart_search_found_items', $shared_results);
                  }
+		 else {
+		     // no post_id that matches ... but nothing trashed
+		     
+		 }
              }
              return array_unique( $this->matched_post_ids );
          }
@@ -155,7 +164,7 @@
      }
      
      public function apply_render_options()
-     {
+     {	 
 	 // get render options and use conditionals to apply them
 	 $search = SmartSearch::get_instance();
 	 $config = $search->get_config();
@@ -171,18 +180,14 @@
 	    add_filter('the_excerpt', array($this, 'highlight_excerpt'));
 	 }
      }
-     
+
      public function highlight_title($title, $id)
      {	 
+	 if(!in_the_loop())
+	     return $title;
+	 
 	 global $wp_query;
 	 
-	 static $counter = 0;
-	 if($counter >= (int)$wp_query->post_count) {
-	     remove_filter('the_title', array($this, 'highlight_title'));
-	     return $title;
-	 }
-	 $counter++;
-
 	 $search = SmartSearch::get_instance();
 	 $config = $search->get_config();
 	 $ruoter_config = $config['search_providers'][$this->router_name];
@@ -197,23 +202,19 @@
 	 
 	 $shared_results = $wp_query->get('smart_search_found_items');
 	 
-	 if($config['search_providers'][$this->router_name]['use_remote_title']) // @TODO always use pattern_full
-	 {
+	 if ($config['search_providers'][$this->router_name]['use_remote_title']) { // @TODO always use pattern_full
 	     // crawled title
 	     $title = preg_replace($pattern_begin, $option_begin, $shared_results[$id]->Title);
 	     $title = preg_replace($pattern_end, $option_end, $title);
 	 }
-	 else
-	 {
+	 else {
 	     // use WP post_title
 	     $remote_title = $shared_results[$id]->Title;
 	     // get all highlightable words
 	     preg_match_all($pattern_full, $remote_title, $matches);
-	     if(!empty($matches[1])) 
-	     {
-		 foreach ($matches[1] as $word) 
-		 {		     
-		     $title = str_ireplace($word, $option_begin.$word.$option_end, $title);
+	     if (!empty($matches[1])) {
+		 foreach ($matches[1] as $word) {
+		     $title = str_ireplace($word, $option_begin . $word . $option_end, $title);
 		 }
 	     }
 	 }
@@ -223,14 +224,10 @@
      
      public function highlight_excerpt($excerpt)
      {
-	 global $wp_query;
-	 
-	 static $counter = 0;
-	 if($counter >= (int)$wp_query->post_count) {
-	     remove_filter('the_excerpt', array($this, 'highlight_excerpt'));
+	 if(!in_the_loop())
 	     return $excerpt;
-	 }
-	 $counter++;
+	 
+	 global $wp_query;
 	 
 	 $search = SmartSearch::get_instance();
 	 $config = $search->get_config();
