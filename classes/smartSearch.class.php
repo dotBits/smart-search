@@ -80,10 +80,7 @@
            $this->option_handler = new SmartSearchOptions();
            $this->options = $this->option_handler->get_options();
           * 
-          */
-	 if(is_admin())
-	     return $this;
-	 
+          */	 
          $this->set_config();
 
          // Load plugin text domain
@@ -378,6 +375,9 @@
       */
      public function route_request($wp_query)
      {
+	 if(is_admin())
+	     return $this;
+	 
          $prefix = $wp_query->get( 'search_router' );
          $s = $wp_query->get( 's' );
          // override Wordpress search behavior
