@@ -2,7 +2,7 @@
 Contributors: Contesio
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3BZF85K9HJ8QJ
 Tags: search, archives
-Requires at least: 3.5.1
+Requires at least: 3.3.1
 Tested up to: 3.9
 Stable tag: 0.9.2
 License: GPLv2 or later
@@ -98,11 +98,28 @@ it will display the content of the searchform.php template in your Theme or the 
 
 On top of that Smart Search is flexible enough for developers who want to use a different search engine provider.
 
+= Troubleshooting =
+
+* **Highlighter is broken in title or is breaking something else**
+
+This issue is generally theme related.
+Let me guess, your theme's search.php file has a function call that looks like this:
+`<h2 title="<?php the_title() ?>"><?php the_title() ?></h2>`
+This happens because *the_title()* **is not supposed** to be used in HTML attributes. *the_title_attribute()* should be used instead.
+The good news is that it can be quickly fixed by replacing the_title() with *the_title_attribute()* in those attributes, leaving the_title() for the HTML text.
+Have a look at [this post](https://pippinsplugins.com/use-the_title-and-the_title_attribute-correctly/ "Use the_title() and the_title_attribute() Correctly") to deepen.
+
 == Screenshots ==
 
 1. Settings Page
 
 == Changelog ==
+
+= 0.9.3 =
+* Extended emphasis themes compatibility
+* Removed direct function in add_filter to debug cache hits and miss
+* Added troubleshooting section to documentation
+* Tested compatibility with Wordpress 3.3.1
 
 = 0.9.2 =
 * Bugfix: do not use plugin's features for search queries in admin section
@@ -117,6 +134,15 @@ On top of that Smart Search is flexible enough for developers who want to use a 
 * First release with custom post types support
 
 == Upgrade Notice ==
+
+= 0.9.3 =
+* Bugfix and compatibility improvements
+
+= 0.9.2 =
+* Bugfix and performance improvements
+
+= 0.9.1 =
+* Emphasis feature and compatibility improvements
 
 = 0.9 =
 * Join the new WordPress search engine Era

@@ -10,8 +10,8 @@
  * @wordpress-plugin
  * Plugin Name: Smart Search
  * Plugin URI:  http://www.contesio.com/wordpress-plugins/smart-search
- * Description: Enhance Wordpress search engine by replacing it with BING
- * Version:     0.9.2
+ * Description: Replaces Wordpress search engine by giving relevance to what matters
+ * Version:     0.9.3
  * Author:      Cristian Ronzio
  * Author URI:  http://www.contesio.com/about
  * Text Domain: smart-search-textdomain
