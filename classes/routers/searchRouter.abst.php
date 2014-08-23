@@ -116,7 +116,8 @@
          if($expiration > 0) {
              set_transient( $this->transient, $wp_query, $expiration );
          }
-	 add_action('wp_footer', function() { echo '<!-- Smart Search Debug: Got fresh query -->'; });
+	 // disabled due to "unexpected T_FUNCTION" error for old php versions
+	 //add_action('wp_footer', function() { echo '<!-- Smart Search Debug: Got fresh query -->'; });
      }
      
      private function get_cached_results(WP_Query $cached_query)
