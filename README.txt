@@ -8,7 +8,7 @@ Stable tag: 0.9.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Smart Search replaces the native WordPress search engine using the Microsoft BING Search API.
+Smart Search replaces the native WordPress search engine by giving relevance to what matters.
 Results are displayed according to your current theme.
 
 == Description ==
