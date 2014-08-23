@@ -135,8 +135,8 @@
              $wp_query->set( 'skip_next_url', $next );
 	 
 	 add_action('smart_search_render', array($this, 'apply_render_options'));
-	 
-	 add_action('wp_footer', function() { echo '<!-- Smart Search Debug: Got cached query -->'; });
+	 // disabled due to "unexpected T_FUNCTION" error for old php versions
+	 //add_action('wp_footer', function() { echo '<!-- Smart Search Debug: Got cached query -->'; });
      }
 
      /**
