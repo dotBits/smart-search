@@ -178,6 +178,7 @@
 	 
 	 if($ruoter_config['highlight_excerpt']) {
 	    add_filter('the_excerpt', array($this, 'highlight_excerpt'));
+	    add_filter('get_the_excerpt', array($this, 'highlight_excerpt'));
 	 }
      }
 
