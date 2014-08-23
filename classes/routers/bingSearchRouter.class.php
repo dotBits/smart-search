@@ -195,7 +195,7 @@
 	 // Bing specific boundaries
 	 $pattern_begin = "/\x{e000}/u";
 	 $pattern_end = "/\x{e001}/u";
-	 $pattern_full = "/\x{e000}(.*)\x{e001}/u";
+	 $pattern_full = "/(?<=\x{e000}).*?(?=\x{e001})/u";
 	 // get title specific render options	 
 	 $option_begin = '<span class="ss_hlights_title" style="background-color:' .$ruoter_config['highlight_title_color']. ';color:'.$ruoter_config['highlight_title_txt_color'].'"\'>';
 	 $option_end = '</span>';
@@ -212,8 +212,8 @@
 	     $remote_title = $shared_results[$id]->Title;
 	     // get all highlightable words
 	     preg_match_all($pattern_full, $remote_title, $matches);
-	     if (!empty($matches[1])) {
-		 foreach ($matches[1] as $word) {
+	     if (!empty($matches[0])) {
+		 foreach ($matches[0] as $word) {
 		     $title = str_ireplace($word, $option_begin . $word . $option_end, $title);
 		 }
 	     }
@@ -236,7 +236,7 @@
 	 // Bing specific boundaries
 	 $pattern_begin = "/\x{e000}/u";
 	 $pattern_end = "/\x{e001}/u";
-	 $pattern_full = "/\x{e000}(.*)\x{e001}/u";
+	 $pattern_full = "/(?<=\x{e000}).*?(?=\x{e001})/u";
 	 // get title specific render options
 	 $option_begin = '<span class="ss_hlights_excerpt" style="background-color:' .$ruoter_config['highlight_excerpt_color']. ';color:'.$ruoter_config['highlight_excerpt_txt_color'].'"\'>';
 	 $option_end = '</span>';
@@ -257,11 +257,11 @@
 	     $remote_excerpt = $shared_results[$id]->Description;
 	     // get all highlightable words
 	     preg_match_all($pattern_full, $remote_excerpt, $matches);
-	     if(!empty($matches[1])) 
+	     if(!empty($matches[0])) 
 	     {
-		 foreach ($matches[1] as $word)
+		 foreach ($matches[0] as $word)
 		 {		     
-		     $excerpt = str_ireplace($word, $option_begin.$word.$option_end, $excerpt);
+		     $excerpt = str_ireplace($word, $option_begin . $word . $option_end, $excerpt);
 		 }
 	     }
 	 }
