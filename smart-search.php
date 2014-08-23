@@ -2,7 +2,7 @@
 /**
  *
  * @package   SmartSearch
- * @author    Cristian Ronzio <cristian.ronzio@gmail.com>
+ * @author    Cristian Ronzio <cristian@contesio.com>
  * @license   GPL-2.0+
  * @link      http://www.contesio.com
  * @copyright www.contesio.com
@@ -11,7 +11,7 @@
  * Plugin Name: Smart Search
  * Plugin URI:  http://www.contesio.com/wordpress-plugins/smart-search
  * Description: Enhance Wordpress search engine by replacing it with BING
- * Version:     0.9.1
+ * Version:     0.9.2
  * Author:      Cristian Ronzio
  * Author URI:  http://www.contesio.com/about
  * Text Domain: smart-search-textdomain
