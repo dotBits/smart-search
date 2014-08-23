@@ -110,6 +110,8 @@ The good news is that it can be quickly fixed by replacing the_title() with *the
 Have a look at [this post](https://pippinsplugins.com/use-the_title-and-the_title_attribute-correctly/ "Use the_title() and the_title_attribute() Correctly") to deepen.
 
 == Screenshots ==
+1. You can see the semantic at work: search for something generic in a geographical region. No custom fields or schema.org data here, everything comes from the search engine!
+2. Smart Search lean and effortless options page
 
 1. Settings Page
 
