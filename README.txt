@@ -3,8 +3,8 @@ Contributors: Contesio
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3BZF85K9HJ8QJ
 Tags: search, archives
 Requires at least: 3.3.1
-Tested up to: 3.9
-Stable tag: 0.9.2
+Tested up to: 3.9.2
+Stable tag: 0.9.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
