@@ -213,10 +213,19 @@
 	     $remote_title = $shared_results[$id]->Title;
 	     // get all highlightable words
 	     preg_match_all($pattern_full, $remote_title, $matches);
-	     if (!empty($matches[0])) {
-		 foreach ($matches[0] as $word) {
-		     $title = str_ireplace($word, $option_begin . $word . $option_end, $title);
+	     if(!empty($matches[0])) 
+	     {
+		 /*
+		 $patterns = array();
+		 $replacements = array();
+		 foreach($matches[0] as $idx => $words) {
+		     $quoted_option_end = preg_quote($option_end, '/');
+		     $patterns[] = "/$words(?!$quoted_option_end)/i"; // negative lookahead with option_end
+		     $replacements[] = $option_begin. $words . $option_end;
 		 }
+		 $title = preg_replace($patterns, $replacements, $title);
+		 */
+		 $title = $this->highglight_multimatch($option_end, $matches[0], $title, $option_begin, $option_end);
 	     }
 	 }
 	 
@@ -260,14 +269,45 @@
 	     preg_match_all($pattern_full, $remote_excerpt, $matches);
 	     if(!empty($matches[0])) 
 	     {
-		 foreach ($matches[0] as $word)
-		 {		     
-		     $excerpt = str_ireplace($word, $option_begin . $word . $option_end, $excerpt);
+		 /*
+		 $patterns = array();
+		 $replacements = array();
+		 foreach($matches[0] as $idx => $words) {
+		     $quoted_option_end = preg_quote($option_end, '/');
+		     $patterns[] = "/$words(?!$quoted_option_end)/i"; // negative lookahead with option_end
+		     $replacements[] = $option_begin. $words . $option_end;
 		 }
+		 $excerpt = preg_replace($patterns, $replacements, $excerpt);
+		 */
+		 $excerpt = $this->highglight_multimatch($option_end, $matches[0], $excerpt, $option_begin, $option_end);
 	     }
 	 }
 	 
 	 return $excerpt;
+     }
+     
+     /**
+      * 
+      * @param string $pattern_end used for negative lookahead
+      * @param array $search
+      * @param array $subject
+      * @param string $before_replace
+      * @param string $after_replace
+      */
+     private function highglight_multimatch($pattern_end, $search, $subject, $before_replace = "", $after_replace = "") {
+	 if(empty($search)) {
+	     return $subject;
+	 }
+	 
+	 $patterns = array();
+	 $replacements = array();
+	 foreach ($search as $idx => $words) {
+	     $quoted_option_end = preg_quote($pattern_end, '/');
+	     $patterns[] = "/$words(?!$quoted_option_end)/i"; // negative lookahead (not followed by $pattern_end)
+	     $replacements[] = $before_replace . $words . $after_replace;
+	 }
+	 
+	 return preg_replace($patterns, $replacements, $subject);
      }
      
      /**
