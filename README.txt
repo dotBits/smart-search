@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: search, archives
 Requires at least: 3.3.1
 Tested up to: 3.9.2
-Stable tag: 0.9.3
+Stable tag: 0.9.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -117,6 +117,9 @@ Have a look at [this post](https://pippinsplugins.com/use-the_title-and-the_titl
 
 == Changelog ==
 
+= 0.9.3.1 =
+* Multimatch highlighter fix
+
 = 0.9.3 =
 * Extended emphasis themes compatibility
 * Removed direct function in add_filter to debug cache hits and miss
@@ -136,6 +139,9 @@ Have a look at [this post](https://pippinsplugins.com/use-the_title-and-the_titl
 * First release with custom post types support
 
 == Upgrade Notice ==
+
+= 0.9.3.1 =
+* Fixed a bug that was affecting highlighter on multiple matches with the same word
 
 = 0.9.3 =
 * Bugfix and compatibility improvements
