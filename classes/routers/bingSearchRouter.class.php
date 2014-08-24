@@ -215,16 +215,6 @@
 	     preg_match_all($pattern_full, $remote_title, $matches);
 	     if(!empty($matches[0])) 
 	     {
-		 /*
-		 $patterns = array();
-		 $replacements = array();
-		 foreach($matches[0] as $idx => $words) {
-		     $quoted_option_end = preg_quote($option_end, '/');
-		     $patterns[] = "/$words(?!$quoted_option_end)/i"; // negative lookahead with option_end
-		     $replacements[] = $option_begin. $words . $option_end;
-		 }
-		 $title = preg_replace($patterns, $replacements, $title);
-		 */
 		 $title = $this->highglight_multimatch($option_end, $matches[0], $title, $option_begin, $option_end);
 	     }
 	 }
@@ -269,16 +259,6 @@
 	     preg_match_all($pattern_full, $remote_excerpt, $matches);
 	     if(!empty($matches[0])) 
 	     {
-		 /*
-		 $patterns = array();
-		 $replacements = array();
-		 foreach($matches[0] as $idx => $words) {
-		     $quoted_option_end = preg_quote($option_end, '/');
-		     $patterns[] = "/$words(?!$quoted_option_end)/i"; // negative lookahead with option_end
-		     $replacements[] = $option_begin. $words . $option_end;
-		 }
-		 $excerpt = preg_replace($patterns, $replacements, $excerpt);
-		 */
 		 $excerpt = $this->highglight_multimatch($option_end, $matches[0], $excerpt, $option_begin, $option_end);
 	     }
 	 }
