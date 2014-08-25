@@ -11,7 +11,7 @@
  * Plugin Name: Smart Search
  * Plugin URI:  http://www.contesio.com/wordpress-plugins/smart-search
  * Description: Replaces Wordpress search engine by giving relevance to what matters
- * Version:     0.9.3.1
+ * Version:     0.9.4
  * Author:      Cristian Ronzio
  * Author URI:  http://www.contesio.com/about
  * Text Domain: smart-search-textdomain

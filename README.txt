@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: search, archives
 Requires at least: 3.3.1
 Tested up to: 3.9.2
-Stable tag: 0.9.3.1
+Stable tag: 0.9.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,6 +125,10 @@ if you see some results you're on the good way, otherwise you have [let BING ind
 
 == Changelog ==
 
+= 0.9.4 =
+* Admin feature: color pickers to choose highlight colors
+* Extended troubleshooting doc section
+
 = 0.9.3.1 =
 * Multimatch highlighter fix
 
@@ -147,6 +151,9 @@ if you see some results you're on the good way, otherwise you have [let BING ind
 * First release with custom post types support
 
 == Upgrade Notice ==
+
+= 0.9.4 =
+* Added color pickers to choose highlight colors
 
 = 0.9.3.1 =
 * Fixed a bug that was affecting highlighter on multiple matches with the same word
