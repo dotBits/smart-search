@@ -270,11 +270,11 @@
       * 
       * @param string $pattern_end used for negative lookahead
       * @param array $search
-      * @param array $subject
+      * @param string $subject
       * @param string $before_replace
       * @param string $after_replace
       */
-     private function highglight_multimatch($pattern_end, array $search, array $subject, $before_replace = "", $after_replace = "") {
+     private function highglight_multimatch($pattern_end, array $search, $subject, $before_replace = "", $after_replace = "") {
 	 if(empty($search)) {
 	     return $subject;
 	 }
