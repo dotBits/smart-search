@@ -1,3 +1,12 @@
+<style>
+    .wp-picker-container {
+	min-width: 260px;
+    }
+    .wp-picker-holder {
+	position: absolute;
+	z-index: 99;
+    }
+</style>
 <div class="wrap">
 
     <h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
@@ -91,10 +100,10 @@
 			</select>
                     </td>
 		    <td>
-			<input type="text" name="highlight_title_color" value="<?php echo $data['highlight_title_color'] ?>" style="display:block">
+			<input type="text" class="color-field" name="highlight_title_color" value="<?php echo $data['highlight_title_color'] ?>">
                     </td>
 		    <td>
-			<input type="text" name="highlight_title_txt_color" value="<?php echo $data['highlight_title_txt_color'] ?>" style="display:block">
+			<input type="text" class="color-field" name="highlight_title_txt_color" value="<?php echo $data['highlight_title_txt_color'] ?>">
                     </td>
                 </tr>
 		
@@ -115,10 +124,10 @@
 			</select>
                     </td>
 		    <td>
-			<input type="text" name="highlight_excerpt_color" value="<?php echo $data['highlight_excerpt_color'] ?>" style="display:block">
+			<input type="text" class="color-field" name="highlight_excerpt_color" value="<?php echo $data['highlight_excerpt_color'] ?>">
                     </td>
 		    <td>
-			<input type="text" name="highlight_excerpt_txt_color" value="<?php echo $data['highlight_excerpt_txt_color'] ?>" style="display:block">
+			<input type="text" class="color-field" name="highlight_excerpt_txt_color" value="<?php echo $data['highlight_excerpt_txt_color'] ?>">
                     </td>
                 </tr>
                 
