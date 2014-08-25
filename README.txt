@@ -33,7 +33,7 @@ Easy, simple and fast!
 If this is your way and fits your needs, you could consider [Smart Search Pro][4] and its extended features.
 
 **Note:** *your blog content must be indexed by BING in order to see the matching result set.* [Go here][6] to submit yuor site to BING.
-Feel free to give leave a [review here][7]. To get in touch with me you can [drop me an email][5].
+Feel free to leave a [review here][7]. To get in touch with me you can [drop me an email][5].
 
 = Features = 
 
@@ -105,9 +105,17 @@ On top of that Smart Search is flexible enough for developers who want to use a 
 This issue is generally theme related.
 Let me guess, your theme's search.php file has a function call that looks like this:
 `<h2 title="<?php the_title() ?>"><?php the_title() ?></h2>`
-This happens because *the_title()* **is not supposed** to be used in HTML attributes. *the_title_attribute()* should be used instead.
-The good news is that it can be quickly fixed by replacing the_title() with *the_title_attribute()* in those attributes, leaving the_title() for the HTML text.
+This happens because *the_title()* **is not supposed** to be used in HTML attributes. *the_title_attribute()* should be used instead.<br>
+This is the correct usage:
+`<h2 title="<?php the_title_attribute() ?>"><?php the_title() ?></h2>`
 Have a look at [this post](https://pippinsplugins.com/use-the_title-and-the_title_attribute-correctly/ "Use the_title() and the_title_attribute() Correctly") to deepen.
+
+* **Results are always empty**
+1. Check if your website is indexed by BING: go to http://bing.com and type the following by replacing "mysite.com" with your domain:
+`site:mysite.com`
+if you see some results you're on the good way, otherwise you have [let BING index you blog](http://www.bing.com/toolbox/submit-site-url).<br>
+*Important Note:* Taxonomy pages like *http://mysite.com/category/news*, *http://mysite.com/tags/politics*, *http://mysite.com/author/john* etc. are not included in search results. This is one of the core features of **Smart Search Pro**
+2. If you have any other search related plugin active, try to deactivate it in order to avoid unexpected conflicts.
 
 == Screenshots ==
 1. You can see the semantic at work: search for something generic in a geographical region. No custom fields or schema.org data here, everything comes from the search engine!
