@@ -262,7 +262,7 @@
                      'hours' => __('Hours', PLUGIN_TXT_DOMAIN),
              ));
 	     $wp_ver = get_bloginfo('version');
-	     if (version_compare($wp_ver, '3.5', 'lt')) {
+	     if (!version_compare($wp_ver, '3.5', 'lt')) {
 		 wp_enqueue_style('wp-color-picker');
 		 wp_enqueue_script( $this->plugin_slug . '-admin-color-picker', PLUGIN_URL . '/js/admin-color-picker.js', array( 'wp-color-picker' ), false, true );
 	     }
