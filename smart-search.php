@@ -4,16 +4,16 @@
  * @package   SmartSearch
  * @author    Cristian Ronzio <cristian@contesio.com>
  * @license   GPL-2.0+
- * @link      http://www.contesio.com
+ * @link      http://wordpress.org/plugins/smart-search
  * @copyright www.contesio.com
  *
  * @wordpress-plugin
  * Plugin Name: Smart Search
- * Plugin URI:  http://www.contesio.com/wordpress-plugins/smart-search
+ * Plugin URI:  http://wordpress.org/plugins/smart-search
  * Description: Replaces Wordpress search engine by giving relevance to what matters
  * Version:     0.9.4
  * Author:      Cristian Ronzio
- * Author URI:  http://www.contesio.com/about
+ * Author URI:  http://profiles.wordpress.org/contesio/
  * Text Domain: smart-search-textdomain
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt

@@ -114,7 +114,7 @@ Have a look at [this post](https://pippinsplugins.com/use-the_title-and-the_titl
 1. Check if your website is indexed by BING: go to http://bing.com and type the following by replacing "mysite.com" with your domain:
 `site:mysite.com`
 if you see some results you're on the good way, otherwise you have [let BING index you blog](http://www.bing.com/toolbox/submit-site-url).<br>
-*Important Note:* Taxonomy pages like *http://mysite.com/category/news*, *http://mysite.com/tags/politics*, *http://mysite.com/author/john* etc. are not included in search results. This is one of the core features of **Smart Search Pro**
+*Important Note:* Taxonomy pages like *http://mysite.com/category/news*, *http://mysite.com/tags/politics*, *http://mysite.com/author/john* etc. are not included in search results. This is one of the core features of **Smart Search Pro**<br>
 2. If you have any other search related plugin active, try to deactivate it in order to avoid unexpected conflicts.
 
 == Screenshots ==
