@@ -113,7 +113,7 @@
 
          global $wp_query;
          // #cache_set
-         if($expiration > 0) {
+         if($expiration > 0 && !empty($this->matched_post_ids)) {
              set_transient( $this->transient, $wp_query, $expiration );
          }
 	 // disabled due to "unexpected T_FUNCTION" error for old php versions
