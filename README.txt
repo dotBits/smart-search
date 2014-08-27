@@ -101,20 +101,20 @@ On top of that Smart Search is flexible enough for developers who want to use a 
 = Troubleshooting =
 
 * **Highlighter is broken in title or is breaking something else**
-
 This issue is generally theme related.
 Let me guess, your theme's search.php file has a function call that looks like this:
 `<h2 title="<?php the_title() ?>"><?php the_title() ?></h2>`
-This happens because *the_title()* **is not supposed** to be used in HTML attributes. *the_title_attribute()* should be used instead.<br>
+This happens because *the_title()* **is not supposed** to be used in HTML attributes. In this case *the_title_attribute()* should be used instead.<br>
 This is the correct usage:
 `<h2 title="<?php the_title_attribute() ?>"><?php the_title() ?></h2>`
 Have a look at [this post](https://pippinsplugins.com/use-the_title-and-the_title_attribute-correctly/ "Use the_title() and the_title_attribute() Correctly") to deepen.
 
 * **Results are always empty**
-1. Check if your website is indexed by BING: go to http://bing.com and type the following by replacing "mysite.com" with your domain:
+1. Check if your website is indexed by BING: go to http://bing.com and type the following
 `site:mysite.com`
-if you see some results you're on the good way, otherwise you have [let BING index you blog](http://www.bing.com/toolbox/submit-site-url).<br>
-*Important Note:* Taxonomy pages like *http://mysite.com/category/news*, *http://mysite.com/tags/politics*, *http://mysite.com/author/john* etc. are not included in search results. This is one of the core features of **Smart Search Pro**<br>
+*replace "mysite.com" with your domain.*
+If you see some results you're on the good way, otherwise [let BING index your blog](http://www.bing.com/toolbox/submit-site-url).<br>
+**Important Note:** Taxonomy pages like */category/news*, */tags/politics*, */author/john* etc. are not included in search results because they're archives, not posts or pages. This is one of the core features of **Smart Search Pro**<br>
 2. If you have any other search related plugin active, try to deactivate it in order to avoid unexpected conflicts.
 
 == Screenshots ==
