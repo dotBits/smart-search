@@ -99,7 +99,6 @@
          else {
              
          }
-         $this->get_cached_results();
          do_action('smart_search_render');
      }
      
