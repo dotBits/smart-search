@@ -399,7 +399,7 @@
          // execute outside admin section and within main_query, if and only if search_slug is handled
          if (!is_admin() && $wp_query->is_main_query() && !empty( $prefix ) && !empty( $search_query ))
          {
-             $this->prepare_router( $prefix );
+             $this->prepare_router( $prefix, $search_query );
          }
      }
 
@@ -416,14 +416,14 @@
       * @param string $prefix
       * @param WP_Query $wp_query
       */
-     public function prepare_router($prefix)
+     public function prepare_router($prefix, $search_query)
      {
          $fileName = strtolower( $prefix ) . 'SearchRouter.class.php';
          $className = ucfirst( $prefix ) . 'SearchRouterImpl';
          if (file_exists( ROUTERS_PATH . '/' . $fileName ))
          {
              require_once(ROUTERS_PATH . '/' . $fileName);
-             $this->set_search_router( new $className() );
+             $this->set_search_router( new $className($search_query) );
          }
      }
 
