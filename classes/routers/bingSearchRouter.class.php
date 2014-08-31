@@ -1,6 +1,7 @@
 <?php
 
  require_once ROUTERS_PATH . '/searchRouter.abst.php';
+ require_once CLASS_PATH . '/SmartSearchResultItem.class.php';
 
  class BingSearchRouterImpl extends SearchRouter
  {
@@ -10,10 +11,6 @@
       */
      private $apikey = null;
      
-     /**
-      * BING's matching items
-      */
-     public $results = array();
      
      /**
       *
@@ -33,7 +30,8 @@
              . '_s=' . $this->search_query
              . '_d=' . $this->context_domain
              . '_n=' . $wp_query->get('posts_per_page', get_option('posts_per_page'))
-	     . '_p=' . $wp_query->get('paged');
+	     . '_p=' . $wp_query->get('paged')
+             . '_sk='. $this->skip;
 
          return $string;
      }
@@ -77,9 +75,26 @@
          curl_close($ch);
 
          $response = json_decode($json);
-         if(!empty($response->d->results)) {
-             $this->results = $response->d->results;
-         }         
+         if (empty($response->d->results)) {
+             return false;
+         }
+         $results = array();
+         $custom_domain = $this->plugin->config['search_providers'][$this->router_name]['context_domain'];
+         foreach ($response->d->results as $result) {
+             if (!empty($custom_domain)) {
+                 $post_url = str_replace($custom_domain, str_replace(array("http://", "https://"), "", site_url()), $result->Url);
+             }
+             else {
+                 $post_url = $result->Url;
+             }
+             $results[] = new SmartSearchResultItem(array(
+                     'post_permalink' => urldecode($post_url),
+                     'post_title' => $result->Title,
+                     'post_excerpt' => $result->Description
+                 ));
+         }
+         
+         return $results;
      }
  }
 

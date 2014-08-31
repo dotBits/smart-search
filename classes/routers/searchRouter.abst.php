@@ -40,6 +40,23 @@
       * @var string
       */
      protected $transient = null;
+     
+     /**
+      * Remote search engine matching items
+      */
+     public $results = array();
+     
+     /**
+      * List of post ids that matches urls returned by the remote search engine
+      * @var array $matched_post_ids
+      */
+     public $matched_post_ids = array();
+     
+     /**
+      * Other urls that doesn't match any post ID
+      * @var $unmatched_post_ids
+      */
+     public $unmatched_post_ids = array();
 
 
 
@@ -72,33 +89,54 @@
       */
      final protected function search()
      {
-         if (false === ( $results = get_transient( $this->transient ) ))
-         {
-             $results = $this->get_remote_results();
+         if (false === ( $this->results = get_transient($this->transient) )) {             
+             $this->results = $this->get_remote_results();
+             if (empty($this->results)) {
+                 return;
+             }
+             $this->split_results($this->results);
+             
          }
-         else
-         {
+         else {
              //$this->get_cached_results( $results );
          }
          //add_filter( 'found_posts', array($this, 'adjust_offset_pagination'), 1, 2 );	 
-	 do_action( 'smart_search_render' );	 
+         do_action('smart_search_render');
      }
      
      protected function get_cached_results(WP_Query $cached_query)
      {
          
      }
+     
+     /**
+      * Fills the two set of results $matched_post_ids and $unmatched_post_ids
+      * Each result in $results array MUST be normalized to a SmartSearchResultItem object
+      * @param array $results
+      */
+     final protected function split_results(array $results)
+     {
+         if (empty($results)) {
+             return;
+         }
+         foreach ($results as $index => $result) {
+             
+         }
+     }
 
      /**
       * Cache key setter
       */
      abstract protected function set_transient();
+     
      /**
       * Init function that runs just before search
       */
      abstract protected function init();
+     
      /**
       * API call to the search engine service
+      * must return an array of SmartSearchResultItem objects
       */
      abstract protected function get_remote_results();
 
