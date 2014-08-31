@@ -51,13 +51,6 @@
       * @var array $matched_post_ids
       */
      public $matched_post_ids = array();
-     
-     /**
-      * Other urls that doesn't match any post ID
-      * @var $unmatched_post_ids
-      */
-     public $unmatched_post_ids = array();
-
 
 
      public function __construct($search_query = "")
@@ -94,7 +87,7 @@
              if (empty($this->results)) {
                  return;
              }
-             $this->split_results($this->results);
+             $this->set_matched_post_ids($this->results);
              
          }
          else {
@@ -114,13 +107,21 @@
       * Each result in $results array MUST be normalized to a SmartSearchResultItem object
       * @param array $results
       */
-     final protected function split_results(array $results)
+     final protected function set_matched_post_ids(array $results)
      {
          if (empty($results)) {
-             return;
+             return 0;
          }
          foreach ($results as $index => $result) {
-             
+             if (!$result instanceof SmartSearchResultItem) {
+                 $e = new Exception('$result must be an instance of SmartSearchResultItem');
+                 echo $e->getMessage() . '<br>' . $e->getFile() . ' at line ' . $e->getLine();
+                 die();
+             }
+             $post_id = get_post_id_from_url($result->url);
+             if (!empty($post_id)) {
+                 $this->matched_post_ids[] = $post_id;
+             }
          }
      }
 
