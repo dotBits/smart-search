@@ -84,26 +84,23 @@
      {
          global $wp_query;
          
-         if (false === ( $this->results = get_transient($this->transient) )) {             
+         if (false === ( $this->results = get_transient($this->transient) )) {
              $this->results = $this->get_remote_results();
              if (empty($this->results)) {
                  return;
              }
-             $this->set_matched_post_ids($this->results);
-             
+             $this->set_matched_post_ids($this->results);             
              // cache set
-             
+             $expire = $this->plugin->config['search_providers'][$this->router_name]['cache_expire'];
+             if ($expire > 0) {
+                 set_transient($this->transient, $this->results, $expire);
+             }
          }
          else {
-             //$this->get_cached_results( $results );
+             
          }
-         //add_filter( 'found_posts', array($this, 'adjust_offset_pagination'), 1, 2 );	 
+         $this->get_cached_results();
          do_action('smart_search_render');
-     }
-     
-     protected function get_cached_results(WP_Query $cached_query)
-     {
-         
      }
      
      /**
