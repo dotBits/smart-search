@@ -82,12 +82,16 @@
       */
      final protected function search()
      {
+         global $wp_query;
+         
          if (false === ( $this->results = get_transient($this->transient) )) {             
              $this->results = $this->get_remote_results();
              if (empty($this->results)) {
                  return;
              }
              $this->set_matched_post_ids($this->results);
+             
+             // cache set
              
          }
          else {
@@ -114,7 +118,7 @@
          }
          foreach ($results as $index => $result) {
              if (!$result instanceof SmartSearchResultItem) {
-                 $e = new Exception('$result must be an instance of SmartSearchResultItem');
+                 $e = new Exception("\$result at index $index must be an instance of SmartSearchResultItem");
                  echo $e->getMessage() . '<br>' . $e->getFile() . ' at line ' . $e->getLine();
                  die();
              }
@@ -122,6 +126,11 @@
              if (!empty($post_id)) {
                  $this->matched_post_ids[] = $post_id;
              }
+         }
+         
+         global $wp_query;
+         if (!empty($this->matched_post_ids)) {
+             $wp_query->set('post__in', $this->matched_post_ids);
          }
      }
 
