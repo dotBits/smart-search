@@ -43,6 +43,11 @@
          $this->set_remote_search_url_params();
      }
      
+     protected function set_max_results()
+     {
+         $this->max_results = 50;
+     }
+
      private function set_remote_search_url_params()
      {
          $this->remote_search_url .= "&Query='" . urlencode(urldecode($this->search_query));
@@ -50,13 +55,12 @@
 
          $skip = ($this->skip > 0) ? '&$skip=' . $this->skip : "";
          $this->remote_search_url .= urlencode(" $domain'") . $skip;
-         if(
-             $this->plugin->config['search_providers'][$this->router_name]['highlight_title'] || 
+         if (
+             $this->plugin->config['search_providers'][$this->router_name]['highlight_title'] ||
              $this->plugin->config['search_providers'][$this->router_name]['highlight_title']
-             ) {
+         ) {
              $this->remote_search_url .= "&Options='EnableHighlighting'";
          }
-         
      }
      
      protected function get_remote_results()
@@ -87,11 +91,13 @@
              else {
                  $post_url = $result->Url;
              }
-             $results[] = new SmartSearchResultItem(array(
-                     'post_permalink' => urldecode($post_url),
-                     'post_title' => $result->Title,
-                     'post_excerpt' => $result->Description
-                 ));
+             $post = new stdClass();
+             $post->guid = urldecode($post_url);
+             $post->post_title = $result->Title;
+             $post->post_excerpt = $result->Description;
+             $post->post_content = $result->Description;
+             
+             $results[] = new SmartSearchResultItem($post);
          }
          
          return $results;

@@ -2,14 +2,18 @@
  
  class SmartSearchResultItem
  {
-     public $url;
-     public $title;
-     public $description;
-     
-     public function __construct(array $args)
+     public $ID = 0;
+     public $post_type = 'post';
+     public $post_status = 'publish';
+     public $guid;
+     public $post_title;
+     public $post_excerpt;
+     public $post_content;
+
+     public function __construct(stdClass $post)
      {
-         $this->url = $args['post_permalink'];
-         $this->title = $args['post_title'];
-         $this->description = $args['post_excerpt'];
+         foreach ( get_object_vars( $post ) as $key => $value ) {
+             $this->$key = $value;
+         }	
      }
  }

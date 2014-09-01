@@ -36,6 +36,12 @@
      protected $context_domain = null;
      
      /**
+      * The number of results used by the remote search engine
+      * @var int $max_results
+      */
+     protected $max_results = null;
+     
+     /**
       * Cache key
       * @var string
       */
@@ -68,7 +74,7 @@
              $this->search();
          }
      }
-     
+
      protected function set_context_domain()
      {
          $this->context_domain = $this->plugin->config['search_providers'][$this->router_name]['context_domain'];
@@ -89,7 +95,7 @@
              if (empty($this->results)) {
                  return;
              }
-             $this->set_matched_post_ids($this->results);             
+             $this->set_matched_post_ids($this->results);
              // cache set
              $expire = $this->plugin->config['search_providers'][$this->router_name]['cache_expire'];
              if ($expire > 0) {
@@ -118,9 +124,9 @@
                  echo $e->getMessage() . '<br>' . $e->getFile() . ' at line ' . $e->getLine();
                  die();
              }
-             $post_id = get_post_id_from_url($result->url);
+             $post_id = get_post_id_from_url($result->guid);
              if (!empty($post_id)) {
-                 $this->matched_post_ids[] = $post_id;
+                 $this->matched_post_ids[$index] = $post_id;
              }
          }
          
@@ -128,6 +134,60 @@
          if (!empty($this->matched_post_ids)) {
              $wp_query->set('post__in', $this->matched_post_ids);
          }
+         
+         add_filter('the_posts', array($this, 'filter_posts_list'), 10);
+     }
+     
+     /**
+      * Keep only the posts that honor the original query
+      * @return array of WP_Post objects
+      */
+     public function filter_posts_list()
+     {
+         global $wp_query;
+         if (empty($wp_query->posts)) {
+             return $wp_query->posts;
+         }
+         
+         $posts = wp_list_pluck( $wp_query->posts, 'ID' );
+         foreach ($this->matched_post_ids as $index => $post_id) {
+             $key = array_search($post_id, $posts);
+             if ($key === false) {
+                 unset($this->results[$index]);
+             }
+         }
+         
+         $new_post_list = array();
+         foreach ($this->results as $post) {
+             $new_post_list[] = $post;
+         }
+         
+         return $new_post_list;
+     }
+
+     /**
+      * Convert filtered results and sets $wp_query->posts
+      * @return array of WP_Post objects
+      */
+     public function alter_posts_list()
+     {
+         global $wp_query;
+         
+         $posts = array();
+         foreach ($this->results as $result) {
+             $post = new stdClass();
+             $post->ID = 0;
+             $post->post_type = 'post';
+             $post->post_status = 'publish';
+             $post->guid = $result->url;
+             $post->post_title = $result->title;
+             $post->post_excerpt = $result->description;
+             $post->post_content = $result->description;
+             
+             $posts[] = new WP_Post($post);
+         }
+         
+         return $posts;
      }
 
      /**
@@ -141,6 +201,11 @@
      abstract protected function init();
      
      /**
+      * The result set size must be explicitly set
+      */
+     abstract protected function set_max_results();
+
+          /**
       * API call to the search engine service
       * must return an array of SmartSearchResultItem objects
       */
