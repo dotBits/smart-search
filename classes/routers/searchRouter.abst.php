@@ -134,8 +134,9 @@
          if (!empty($this->matched_post_ids)) {
              $wp_query->set('post__in', $this->matched_post_ids);
          }
-         
-         add_filter('the_posts', array($this, 'filter_posts_list'), 10);
+         if ($wp_query->is_main_query()) {
+             add_filter('the_posts', array($this, 'filter_posts_list'), 10);
+         }         
      }
      
      /**
@@ -162,6 +163,7 @@
              $new_post_list[] = $post;
          }
          
+         remove_filter('the_posts', array($this, 'filter_posts_list'));
          return $new_post_list;
      }
 
