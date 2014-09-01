@@ -39,7 +39,7 @@ SmartSearch::get_instance();
 
 function get_post_id_from_url($url)
  {
-     global $wp_rewrite;
+     global $wp_rewrite, $wp_query;
 
      $url = apply_filters('url_to_postid', $url);
 
@@ -138,8 +138,35 @@ function get_post_id_from_url($url)
 
              // Do the query
              $query = new WP_Query($query);
-             if (!empty($query->posts) && $query->is_singular)
-                 return $query->post->ID;
+             if (!empty($query->posts) && $query->is_singular) {
+
+                 if (empty($wp_query->tax_query->queries)) {
+                     return $query->post->ID;
+                 }
+                 if (isset($wp_query->tax_query->relation) && strtoupper($wp_query->tax_query->relation) == 'OR') {
+                     $relation = 'OR';
+                 }
+                 else {
+                     $relation = 'AND';
+                 }
+                 // check for taxonomy matches @TODO tax_query operator should be checked as well
+                 $got_terms = false;
+                 foreach ($wp_query->tax_query->queries as $tax_query) {
+                     $got_terms = has_term($tax_query['terms'], $tax_query['taxonomy'], $query->post->ID);
+                     if ($relation == 'OR' && $got_terms) {
+                         break;
+                     }
+                     elseif ($relation == 'AND' && !$got_terms) {
+                         return 0;
+                     }
+                 }
+                 if ($got_terms) {
+                    return $query->post->ID;
+                 } 
+                 else {
+                     return 0;
+                 }
+             }
              else
                  return 0;
          }
