@@ -157,8 +157,8 @@
          foreach ($this->matched_post_ids as $index => $post_id) {
              $key = array_search($post_id, $posts);
              if ($key === false) {
-                 unset($this->results[$index]);
                  unset($this->results_map[$this->results[$index]->hash]);
+                 unset($this->results[$index]);
              }
          }
          
