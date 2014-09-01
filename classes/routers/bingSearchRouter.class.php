@@ -87,7 +87,8 @@
                  $post_url = $result->Url;
              }
              $post = new stdClass();
-             $post->guid = urldecode($post_url);
+             $post->hash = $result->ID;
+             $post->post_permalink = urldecode($post_url);
              $post->post_title = $result->Title;
              $post->post_excerpt = $result->Description;
              $post->post_content = $result->Description;

@@ -47,6 +47,11 @@
      public $results = array();
      
      /**
+      * An associative array with a unique identifier as key
+      */
+     public $results_map = array();
+
+     /**
       * List of post ids that matches urls returned by the remote search engine
       * @var array $matched_post_ids
       */
@@ -118,10 +123,13 @@
                  echo $e->getMessage() . '<br>' . $e->getFile() . ' at line ' . $e->getLine();
                  die();
              }
-             $post_id = get_post_id_from_url($result->guid);
+             $post_id = get_post_id_from_url($result->post_permalink);
              if (!empty($post_id)) {
                  $this->matched_post_ids[$index] = $post_id;
              }
+             
+             // build an hashmap for later use
+             $this->results_map[$result->hash] = $result;
          }
          
          global $wp_query;
@@ -130,7 +138,8 @@
          }
          if ($wp_query->is_main_query()) {
              add_filter('the_posts', array($this, 'filter_posts_list'), 10);
-         }         
+             add_filter('the_permalink', array($this, 'filter_permalink'));
+         }
      }
      
      /**
@@ -162,28 +171,18 @@
      }
 
      /**
-      * Convert filtered results and sets $wp_query->posts
-      * @return array of WP_Post objects
+      * 
+      * @return string
       */
-     public function alter_posts_list()
+     public function filter_permalink($url)
      {
-         global $wp_query;
-         
-         $posts = array();
-         foreach ($this->results as $result) {
-             $post = new stdClass();
-             $post->ID = 0;
-             $post->post_type = 'post';
-             $post->post_status = 'publish';
-             $post->guid = $result->url;
-             $post->post_title = $result->title;
-             $post->post_excerpt = $result->description;
-             $post->post_content = $result->description;
-             
-             $posts[] = new WP_Post($post);
+         global $post, $wp_query;
+         if(in_the_loop() && $wp_query->is_main_query()) {
+            return $this->results_map[$post->hash]->post_permalink;
          }
-         
-         return $posts;
+         else {
+             return $url;
+         }
      }
 
      /**
