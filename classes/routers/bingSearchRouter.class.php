@@ -42,11 +42,6 @@
          $this->apikey = $this->plugin->config['search_providers'][$router]['API_KEY'];
          $this->set_remote_search_url_params();
      }
-     
-     protected function set_max_results()
-     {
-         $this->max_results = 50;
-     }
 
      private function set_remote_search_url_params()
      {

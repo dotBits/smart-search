@@ -36,12 +36,6 @@
      protected $context_domain = null;
      
      /**
-      * The number of results used by the remote search engine
-      * @var int $max_results
-      */
-     protected $max_results = null;
-     
-     /**
       * Cache key
       * @var string
       */
@@ -201,11 +195,6 @@
       * Init function that runs just before search
       */
      abstract protected function init();
-     
-     /**
-      * The result set size must be explicitly set
-      */
-     abstract protected function set_max_results();
 
           /**
       * API call to the search engine service
