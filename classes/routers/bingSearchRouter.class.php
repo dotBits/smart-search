@@ -18,6 +18,7 @@
      
      protected function set_transient()
      {
+         // @TODO add taxonomy parameters
          global $wp_query;
          $string = $this->get_router_name()
              . '_s=' . $this->search_query
