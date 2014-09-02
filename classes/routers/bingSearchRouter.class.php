@@ -82,18 +82,10 @@
 	 $this->skip_prev_url = (isset($response->d->__prev)) ? $response->d->__prev : null;
 	 
          $results = array();
-         $custom_domain = $this->plugin->config['search_providers'][$this->router_name]['context_domain'];
          foreach ($response->d->results as $result) {
-	     // @TODO move to abstract $custom_domain replace
-             if (!empty($custom_domain)) {
-                 $post_url = str_replace($custom_domain, str_replace(array("http://", "https://"), "", site_url()), $result->Url);
-             }
-             else {
-                 $post_url = $result->Url;
-             }
              $post = new stdClass();
              $post->hash = $result->ID;
-             $post->post_permalink = urldecode($post_url);
+             $post->post_permalink = urldecode($result->Url);
              $post->post_title = $result->Title;
              $post->post_excerpt = $result->Description;
              $post->post_content = $result->Description;

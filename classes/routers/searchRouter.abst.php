@@ -135,6 +135,11 @@
                  echo $e->getMessage() . '<br>' . $e->getFile() . ' at line ' . $e->getLine();
                  die();
              }
+             // convert url with context_domain if needed
+             if (!empty($this->context_domain)) {
+                 $result->post_permalink = str_replace($this->context_domain, str_replace(array("http://", "https://"), "", site_url()), $result->post_permalink);
+             }
+             
              $post_id = get_post_id_from_url($result->post_permalink);
              if (!empty($post_id)) {
                  $this->matched_post_ids[$index] = $post_id;
@@ -142,6 +147,8 @@
              
              // build an hashmap for later use
              $this->results_map[$result->hash] = $result;
+             
+             
          }
          
          global $wp_query;
@@ -178,11 +185,11 @@
          
          $new_post_list = array();
          foreach ($this->results as $post) {	     
-             $new_post_list[] = apply_filters('smart_search_add_result_item', $post, &$this);	     
+             $new_post_list[] = apply_filters('smart_search_add_result_item', $post, $this);	     
          }
          
          remove_filter('the_posts', array($this, 'filter_smart_search_result_items'));	 
-         return apply_filters('smart_search_return_new_post_list', $new_post_list, &$this);
+         return apply_filters('smart_search_return_new_post_list', $new_post_list, $this);
      }
 
      /**
@@ -194,7 +201,7 @@
      {
          global $post, $wp_query;
          if(in_the_loop() && $wp_query->is_main_query() && !$post->ID) {
-            return apply_filters('smart_search_result_item_permalink', $this->results_map[$post->hash]->post_permalink, &$this);
+            return apply_filters('smart_search_result_item_permalink', $this->results_map[$post->hash]->post_permalink, $this);
          }
          else {
              return $url;
@@ -211,7 +218,7 @@
       */
      abstract protected function init();
 
-          /**
+     /**
       * API call to the search engine service
       * must return an array of SmartSearchResultItem objects
       */
