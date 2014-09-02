@@ -77,9 +77,14 @@
          if (empty($response->d->results)) {
              return false;
          }
+	 
+	 $this->skip_next_url = (isset($response->d->__next)) ? $response->d->__next : null;
+	 $this->skip_prev_url = (isset($response->d->__prev)) ? $response->d->__prev : null;
+	 
          $results = array();
          $custom_domain = $this->plugin->config['search_providers'][$this->router_name]['context_domain'];
          foreach ($response->d->results as $result) {
+	     // @TODO move to abstract $custom_domain replace
              if (!empty($custom_domain)) {
                  $post_url = str_replace($custom_domain, str_replace(array("http://", "https://"), "", site_url()), $result->Url);
              }
@@ -98,6 +103,7 @@
          
          return $results;
      }
+     
  }
 
  

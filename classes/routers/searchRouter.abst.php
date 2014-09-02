@@ -56,7 +56,18 @@
       * @var array $matched_post_ids
       */
      public $matched_post_ids = array();
-
+     
+     /**
+      *
+      * @var string $skip_next_url
+      */
+     public $skip_next_url = null;
+     
+     /**
+      *
+      * @var string $skip_prev_url
+      */
+     public $skip_prev_url = null;
 
      public function __construct($search_query = "")
      {
@@ -92,6 +103,7 @@
          if (false === ( $this->results = get_transient($this->transient) )) {
              $this->results = $this->get_remote_results();
              if (empty($this->results)) {
+		 $wp_query->is_404 = (bool) 1;
                  return;
              }
              $this->set_matched_post_ids($this->results);
@@ -138,12 +150,14 @@
          }
          if ($wp_query->is_main_query()) {
              add_filter('the_posts', array($this, 'filter_smart_search_result_items'), 10);
+	     // @TODO move to render section
              add_filter('the_permalink', array($this, 'filter_smart_search_result_permalink'));
          }
      }
      
      /**
-      * Keep only the posts that honor the original query
+      * Keep only those posts that match in the original query
+      * Honor tax_qery and meta_query
       * @return array of WP_Post objects
       */
      public function filter_smart_search_result_items()
@@ -172,13 +186,14 @@
      }
 
      /**
-      * 
+      * Return the permalink for resources coming from the remote search engine
+      * which are not recorded with a valid $post->ID
       * @return string
       */
      public function filter_smart_search_result_permalink($url)
      {
          global $post, $wp_query;
-         if(in_the_loop() && $wp_query->is_main_query()) {
+         if(in_the_loop() && $wp_query->is_main_query() && !$post->ID) {
             return apply_filters('smart_search_result_item_permalink', $this->results_map[$post->hash]->post_permalink, &$this);
          }
          else {
