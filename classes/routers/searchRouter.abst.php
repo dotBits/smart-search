@@ -222,9 +222,7 @@
          $page = $wp_query->get('paged');
          $per_page = $wp_query->get('posts_per_page');
          $wp_query->max_num_pages = round($wp_query->found_posts / $per_page, 0, PHP_ROUND_HALF_UP);
-         if ($page == 0) {
-             $page = 1;
-         }
+         $page = empty($page) ? 1 : $page;
          $paged_results = array_chunk($new_post_list, $per_page);
          
          return apply_filters('smart_search_paginate_results', $paged_results[$page-1], $this);
