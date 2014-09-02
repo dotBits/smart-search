@@ -193,14 +193,7 @@
          $wp_query->found_posts = count($new_post_list);
          
          // pagination
-         $page = $wp_query->get('paged');
-         $per_page = $wp_query->get('posts_per_page');
-         $wp_query->max_num_pages = round($wp_query->found_posts / $per_page, 0, PHP_ROUND_HALF_UP);
-         if ($page == 0) {
-             $page = 1;
-         }
-         $paged_results = array_chunk($new_post_list, $per_page);
-         $new_post_list = $paged_results[$page-1];
+         $new_post_list = $this->paginate_results($new_post_list);
          
          remove_filter('the_posts', array($this, 'filter_smart_search_result_items'));
          return $new_post_list;
@@ -220,6 +213,21 @@
          else {
              return $url;
          }
+     }
+     
+     protected function paginate_results($new_post_list)
+     {
+         global $wp_query;
+         
+         $page = $wp_query->get('paged');
+         $per_page = $wp_query->get('posts_per_page');
+         $wp_query->max_num_pages = round($wp_query->found_posts / $per_page, 0, PHP_ROUND_HALF_UP);
+         if ($page == 0) {
+             $page = 1;
+         }
+         $paged_results = array_chunk($new_post_list, $per_page);
+         
+         return apply_filters('smart_search_paginate_results', $paged_results[$page-1], $this);
      }
 
      /**
