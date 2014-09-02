@@ -11,16 +11,9 @@
       */
      private $apikey = null;
      
-     
-     /**
-      *
-      * @var int @TODO
-      */
-     public $skip = null;
-     
      public function __construct($search_query = "")
      {
-         parent::__construct($search_query);         
+         parent::__construct($search_query);
      }
      
      protected function set_transient()
@@ -31,7 +24,7 @@
              . '_d=' . $this->context_domain
              . '_n=' . $wp_query->get('posts_per_page', get_option('posts_per_page'))
 	     . '_p=' . $wp_query->get('paged')
-             . '_sk='. $this->skip;
+             . '_sk='. $this->skip_next_url;
 
          return $string;
      }
@@ -47,9 +40,8 @@
      {
          $this->remote_search_url .= "&Query='" . urlencode(urldecode($this->search_query));
          $domain = 'site:' . $this->context_domain;
-
-         $skip = ($this->skip > 0) ? '&$skip=' . $this->skip : "";
-         $this->remote_search_url .= urlencode(" $domain'") . $skip;
+         
+         $this->remote_search_url .= urlencode(" $domain'");
          if (
              $this->plugin->config['search_providers'][$this->router_name]['highlight_title'] ||
              $this->plugin->config['search_providers'][$this->router_name]['highlight_title']
