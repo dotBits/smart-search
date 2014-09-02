@@ -71,7 +71,7 @@
          $this->init();
          if(!empty($search_query)) {
              $this->search();
-         }
+         }	 
      }
 
      protected function set_context_domain()
@@ -137,8 +137,8 @@
              $wp_query->set('post__in', $this->matched_post_ids);
          }
          if ($wp_query->is_main_query()) {
-             add_filter('the_posts', array($this, 'filter_posts_list'), 10);
-             add_filter('the_permalink', array($this, 'filter_permalink'));
+             add_filter('the_posts', array($this, 'filter_smart_search_result_items'), 10);
+             add_filter('the_permalink', array($this, 'filter_smart_search_result_permalink'));
          }
      }
      
@@ -146,7 +146,7 @@
       * Keep only the posts that honor the original query
       * @return array of WP_Post objects
       */
-     public function filter_posts_list()
+     public function filter_smart_search_result_items()
      {
          global $wp_query;
          if (empty($wp_query->posts)) {
@@ -163,23 +163,23 @@
          }
          
          $new_post_list = array();
-         foreach ($this->results as $post) {
-             $new_post_list[] = $post;
+         foreach ($this->results as $post) {	     
+             $new_post_list[] = apply_filters('smart_search_add_result_item', $post, &$this);	     
          }
          
-         remove_filter('the_posts', array($this, 'filter_posts_list'));
-         return $new_post_list;
+         remove_filter('the_posts', array($this, 'filter_smart_search_result_items'));	 
+         return apply_filters('smart_search_return_new_post_list', $new_post_list, &$this);
      }
 
      /**
       * 
       * @return string
       */
-     public function filter_permalink($url)
+     public function filter_smart_search_result_permalink($url)
      {
          global $post, $wp_query;
          if(in_the_loop() && $wp_query->is_main_query()) {
-            return $this->results_map[$post->hash]->post_permalink;
+            return apply_filters('smart_search_result_item_permalink', $this->results_map[$post->hash]->post_permalink, &$this);
          }
          else {
              return $url;
