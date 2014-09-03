@@ -215,6 +215,11 @@
          }
      }
      
+     /**
+      * Since we've altered $wp_query->posts, pagination must be recalculated
+      * @param array $new_post_list
+      * @return array
+      */
      protected function paginate_results($new_post_list)
      {
          global $wp_query;
@@ -223,9 +228,11 @@
          $per_page = $wp_query->get('posts_per_page');
          $wp_query->max_num_pages = round($wp_query->found_posts / $per_page, 0, PHP_ROUND_HALF_UP);
          $page = empty($page) ? 1 : $page;
-         $paged_results = array_chunk($new_post_list, $per_page);
          
-         return apply_filters('smart_search_paginate_results', $paged_results[$page-1], $this);
+         $paged_results = array_chunk($new_post_list, $per_page);         
+         $paged_results = apply_filters('smart_search_paginate_results', $paged_results, $this);
+         
+         return $paged_results[$page-1];
      }
 
      /**
