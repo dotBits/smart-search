@@ -71,8 +71,7 @@
              return false;
          }
 	 
-	 $this->skip_next_url = (isset($response->d->__next)) ? $response->d->__next : null;
-	 $this->skip_prev_url = (isset($response->d->__prev)) ? $response->d->__prev : null;
+	 $this->skip_next_url = (isset($response->d->__next)) ? $response->d->__next . '&$format=json':  null;
 	 
          $results = array();
          foreach ($response->d->results as $result) {
