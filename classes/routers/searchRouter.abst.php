@@ -28,7 +28,7 @@
       * @var string
       */
      protected $remote_search_url = null;
-     
+
      /**
       * Domain context used in searches
       * @var string $context_domain
@@ -58,29 +58,32 @@
      public $matched_post_ids = array();
      
      /**
-      *
-      * @var string $skip_next_url
+      * Requested items for each API call 
+      * @var int $n_results
       */
-     public $skip_next_url = null;
+     public $n_results = 50;
      
      /**
-      *
-      * @var string $skip_prev_url
+      * Offset calculated by $per_page * $current_page
+      * @var int $offset
       */
-     public $skip_prev_url = null;
+     public $offset = 0;
 
      public function __construct($search_query = "")
      {
          global $wp_query;
          $this->router_name = $wp_query->get('search_router');
          $this->search_query = $search_query;
-         $this->plugin = SmartSearch::get_instance();
-         $this->remote_search_url = $this->plugin->config['search_providers'][$this->router_name]['base_uri'];
+         $this->plugin = SmartSearch::get_instance();         
          $this->set_context_domain();
          $this->transient = 'SSearch' . md5( $this->set_transient() );
          
          $this->init();
+         
          if(!empty($search_query)) {
+             // prepare API endpoint
+             $this->set_remote_search_url();
+             // .. go!
              $this->search();
          }	 
      }
@@ -94,7 +97,7 @@
      }
      
      /**
-      * Start flow, relevant logic implemented by concretes
+      * Search dance starts here
       */
      final protected function search()
      {
@@ -114,7 +117,6 @@
              }
              
              add_filter('the_posts', array($this, 'filter_smart_search_result_items'), 10);
-             add_filter('the_posts', array($this, 'check_skip_next_url'), 11);
              add_filter('the_permalink', array($this, 'filter_smart_search_result_permalink'));
          }
          else {
@@ -145,12 +147,11 @@
              
              $post_id = get_post_id_from_url($result->post_permalink);
              if (!empty($post_id)) {
-                 $this->matched_post_ids[$index] = $post_id;
+                 $this->matched_post_ids[$index] = $post_id;                 
              }
              
              // build an hashmap for later use
              $this->results_map[$result->hash] = $result;
-             
              
          }
          
@@ -172,6 +173,19 @@
          global $wp_query;
          if (!$wp_query->is_main_query()) {
              return $posts;
+         }         
+         
+         $is_last_page = current_is_last_page(count($this->results));
+         $should_check_next = should_have_more_results(count($this->results));
+         if ($is_last_page || $should_check_next) {
+             remove_filter('the_posts', array($this, 'filter_smart_search_result_items'), 10);
+             
+             $n_page = $wp_query->get('paged');
+             $this->offset = $this->n_results * !empty($n_page) ?: 1;
+             // update API endpoint
+             $this->set_remote_search_url();
+             // .. and get new results!
+             $posts = $this->get_next_skip_results();
          }
          
          $posts = wp_list_pluck( $posts, 'ID' );
@@ -181,6 +195,9 @@
                  unset($this->matched_post_ids[$index]);
                  unset($this->results_map[$this->results[$index]->hash]);
                  unset($this->results[$index]);
+             }
+             else {
+                 $this->results[$index] = get_post($post_id);
              }
          }
          $wp_query->set('post__in', $this->matched_post_ids);
@@ -195,7 +212,7 @@
          // pagination
          $new_post_list = $this->paginate_results($new_post_list);
          
-         remove_filter('the_posts', array($this, 'filter_smart_search_result_items'));
+         remove_filter('the_posts', array($this, 'filter_smart_search_result_items'), 10);         
          return $new_post_list;
      }
 
@@ -236,53 +253,33 @@
          return $paged_results[$page-1];
      }
      
-     public function check_skip_next_url($posts)
+     public function get_next_skip_results()
      {
          global $wp_query;
-         $current_page = $wp_query->get('paged');
-         
-         if (!$wp_query->is_main_query() || !$current_page) {
-             return $posts;
-         }
-         
-         $should_check_next = $current_page == ($wp_query->max_num_pages - 1);
-         if ($should_check_next && !empty($this->skip_next_url)) {
-             $this->remote_search_url = $this->skip_next_url;
-             $this->set_transient();
-             
-             if (false === ( $next_results = get_transient($this->transient) )) {
-                 $next_results = $this->get_remote_results();
-                 // prepare the queue to appended it to current result set retaining the order
-                 $start = count($this->results);
-                 $queue = array();
-                 foreach ($next_results as $index => $result) {
-                     $queue[$start+$index] = $result;
-                 }
-                 /*
-                 //remove_filter('the_posts', array($this, 'filter_smart_search_result_items'), 10);
-                 remove_filter('the_posts', array($this, 'check_skip_next_url'), 11);
-                 //remove_filter('the_permalink', array($this, 'filter_smart_search_result_permalink'));
-                 
-                 
-                 $this->set_matched_post_ids($queue);
-                 /* cache set
-                 $expire = $this->plugin->config['search_providers'][$this->router_name]['cache_expire'];
-                 if ($expire > 0) {
-                    set_transient($this->transient, $this->results, $expire);
-                 }
-                  
-                 remove_action('pre_get_posts', array($this->plugin, 'route_request'));
-                 $wp_query->set('nopaging', true);
-                 $posts = $wp_query->get_posts();
-                  * 
-                  */
-             }
+         $this->set_transient();
+
+         if (false === ( $next_results = get_transient($this->transient) )) {
+             $next_results = $this->get_remote_results();
+             // @TODO cache set
              
          }
+         // prepare the queue to appended it to current result set retaining the order
+         $start = count($this->results);
+         $this->results = array_merge($this->results, $next_results);
          
-         //remove_filter('the_posts', array($this, 'check_skip_next_url'));
+         $queue = array();
+         foreach ($next_results as $index => $result) {
+             $queue[$start + $index] = $result;
+         }
+         $this->set_matched_post_ids($queue);
+
+         remove_action('pre_get_posts', array($this->plugin, 'route_request'));
+         $posts = $wp_query->get_posts();
+
          return $posts;
      }
+     
+     
 
      /**
       * Cache key setter
@@ -293,6 +290,8 @@
       * Init function that runs just before search
       */
      abstract protected function init();
+     
+     abstract protected function set_remote_search_url();
 
      /**
       * API call to the search engine service

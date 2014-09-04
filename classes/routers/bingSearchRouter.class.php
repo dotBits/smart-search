@@ -11,6 +11,8 @@
       */
      private $apikey = null;
      
+     private $skip_next_url = null;
+     
      public function __construct($search_query = "")
      {
          parent::__construct($search_query);
@@ -34,20 +36,27 @@
      {
          $router = $this->get_router_name();
          $this->apikey = $this->plugin->config['search_providers'][$router]['API_KEY'];
-         $this->set_remote_search_url_params();
+         //$this->set_remote_search_url_params();
      }
 
-     private function set_remote_search_url_params()
+     protected function set_remote_search_url()
      {
-         $this->remote_search_url .= "&Query='" . urlencode(urldecode($this->search_query));
-         $domain = 'site:' . $this->context_domain;
-         
-         $this->remote_search_url .= urlencode(" $domain'");
-         if (
-             $this->plugin->config['search_providers'][$this->router_name]['highlight_title'] ||
-             $this->plugin->config['search_providers'][$this->router_name]['highlight_title']
-         ) {
-             $this->remote_search_url .= "&Options='EnableHighlighting'";
+         if (!empty($this->offset)) {
+             $this->remote_search_url = $this->skip_next_url;
+         }
+         else {
+             $this->remote_search_url = $this->plugin->config['search_providers'][$this->router_name]['base_uri'];
+             $this->remote_search_url .= "&Query='" . urlencode(urldecode($this->search_query));
+
+             $domain = 'site:' . $this->context_domain;
+             $this->remote_search_url .= urlencode(" $domain'");
+
+             if (
+                 $this->plugin->config['search_providers'][$this->router_name]['highlight_title'] ||
+                 $this->plugin->config['search_providers'][$this->router_name]['highlight_title']
+             ) {
+                 $this->remote_search_url .= "&Options='EnableHighlighting'";
+             }
          }
      }
      

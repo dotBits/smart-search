@@ -150,3 +150,29 @@ function get_post_id_from_url($url)
      }
      return 0;
  }
+ 
+ /**
+  * Whether the current page is the last one of result set
+  * @param int $n_result the total results number
+  * @return bool true if the current page is the last one
+  */
+ function current_is_last_page($n_results)
+ {
+     global $wp_query;
+
+     $current_page = $wp_query->get('paged');
+     $per_page = $wp_query->get('posts_per_page');
+     $last_page = $n_results / $per_page;
+
+     return $current_page == $last_page;
+ }
+ 
+ function should_have_more_results($n_results)
+ {
+     global $wp_query;
+
+     $current_page = $wp_query->get('paged');
+     $per_page = $wp_query->get('posts_per_page');
+     
+     return ($current_page * $per_page) > $n_results;
+ }
