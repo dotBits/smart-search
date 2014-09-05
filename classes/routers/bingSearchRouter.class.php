@@ -41,6 +41,29 @@
 
      protected function set_remote_search_url()
      {
+         $this->remote_search_url = $this->plugin->config['search_providers'][$this->router_name]['base_uri'];
+         // query
+         $this->remote_search_url .= "?Query='" . urlencode(urldecode($this->search_query));
+         $domain = 'site:' . $this->context_domain;
+         $this->remote_search_url .= urlencode(" $domain'");
+         // options
+         if (
+                 $this->plugin->config['search_providers'][$this->router_name]['highlight_title'] ||
+                 $this->plugin->config['search_providers'][$this->router_name]['highlight_title']
+             ) {
+                 $this->remote_search_url .= "&Options='EnableHighlighting'";
+             }
+         // top
+         $this->remote_search_url .= '&$top=' . $this->n_results;
+         // skip
+         if (!empty($this->offset)) {
+             $this->remote_search_url .= '&$skip=' . $this->offset;
+         }
+         // format
+         $this->remote_search_url .= '&$format=json';
+         /*
+          * https://api.datamarket.azure.com/Data.ashx/Bing/Search/v1/Web?Query='agriturismi%20site:bio.tuttogreen.it'&Options='EnableHighlighting'&$skip=50&$format=json
+          
          if (!empty($this->offset)) {
              $this->remote_search_url = $this->skip_next_url;
          }
@@ -58,6 +81,7 @@
                  $this->remote_search_url .= "&Options='EnableHighlighting'";
              }
          }
+          */
      }
      
      protected function get_remote_results()
@@ -71,8 +95,25 @@
          curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
          curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
          curl_setopt($ch, CURLOPT_USERPWD, $this->apikey . ":" . $this->apikey);
-
+         curl_setopt($ch, CURLOPT_VERBOSE, true);
+         /*
+           $verbose = fopen('php://temp', 'rw+');
+           curl_setopt($ch, CURLOPT_STDERR, $verbose);
+          * 
+          */
          $json = curl_exec($ch);
+         /*
+           if ($json === FALSE) {
+           printf("cUrl error (#%d): %s<br>\n", curl_errno($ch),
+           htmlspecialchars(curl_error($ch)));
+           }
+
+           rewind($verbose);
+           $verboseLog = stream_get_contents($verbose);
+
+           echo "<pre>", htmlspecialchars($verboseLog), "</pre>\n";
+          * 
+          */
          curl_close($ch);
 
          $response = json_decode($json);
@@ -80,7 +121,7 @@
              return false;
          }
 	 
-	 $this->skip_next_url = (isset($response->d->__next)) ? $response->d->__next . '&$format=json':  null;
+	 //$this->skip_next_url = (isset($response->d->__next)) ? $response->d->__next . '&$format=json':  null;
 	 
          $results = array();
          foreach ($response->d->results as $result) {

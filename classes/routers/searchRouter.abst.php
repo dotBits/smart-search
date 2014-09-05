@@ -82,6 +82,14 @@
          
          if(!empty($search_query)) {
              // prepare API endpoint
+             $current_page = $wp_query->get('paged');
+             $current_page = empty($current_page) ? 1 : $current_page;
+             $per_page = intval(get_option('posts_per_page'));
+             $multiplier = round($current_page * $per_page / $this->n_results, 0, PHP_ROUND_HALF_UP);
+             // @TODO WP non si accorge che ci sono altri risultati
+             if ($multiplier > 1) {
+                 $this->offset = $this->n_results * $multiplier;
+             }
              $this->set_remote_search_url();
              // .. go!
              $this->search();
@@ -103,7 +111,7 @@
      {
          global $wp_query;
          
-         if (false === ( $this->results = get_transient($this->transient) )) {
+         if (false === ( $this->results = get_transient($this->transient) )) {             
              $this->results = $this->get_remote_results();
              if (empty($this->results)) {
 		 $wp_query->is_404 = (bool) 1;
@@ -173,19 +181,6 @@
          global $wp_query;
          if (!$wp_query->is_main_query()) {
              return $posts;
-         }         
-         
-         $is_last_page = current_is_last_page(count($this->results));
-         $should_check_next = should_have_more_results(count($this->results));
-         if ($is_last_page || $should_check_next) {
-             remove_filter('the_posts', array($this, 'filter_smart_search_result_items'), 10);
-             
-             $n_page = $wp_query->get('paged');
-             $this->offset = $this->n_results * !empty($n_page) ?: 1;
-             // update API endpoint
-             $this->set_remote_search_url();
-             // .. and get new results!
-             $posts = $this->get_next_skip_results();
          }
          
          $posts = wp_list_pluck( $posts, 'ID' );
@@ -209,8 +204,8 @@
          $new_post_list = apply_filters('smart_search_return_new_post_list', $new_post_list, $this);
          $wp_query->found_posts = count($new_post_list);
          
-         // pagination
-         $new_post_list = $this->paginate_results($new_post_list);
+         // adjust page number accordingly
+         $this->paginate_results();
          
          remove_filter('the_posts', array($this, 'filter_smart_search_result_items'), 10);         
          return $new_post_list;
@@ -234,23 +229,39 @@
      }
      
      /**
-      * Since we've altered $wp_query->posts, pagination must be recalculated
+      * @TODO 
+      * impostare max_num_pages in modo che WP mostri il link di paginazione, ma
+      * impostare $wp_query->set('paged') usando $idx
+      * 
       * @param array $new_post_list
       * @return array
       */
-     protected function paginate_results($new_post_list)
+     protected function paginate_results()
      {
          global $wp_query;
-         
+
          $page = $wp_query->get('paged');
+         $page = empty($page) ? 1 : $page;
          $per_page = $wp_query->get('posts_per_page');
          $wp_query->max_num_pages = round($wp_query->found_posts / $per_page, 0, PHP_ROUND_HALF_UP);
-         $page = empty($page) ? 1 : $page;
-         
-         $paged_results = array_chunk($new_post_list, $per_page);         
+
+         $paged_results = array_chunk($new_post_list, $per_page);
          $paged_results = apply_filters('smart_search_paginate_results', $paged_results, $this);
-         
-         return $paged_results[$page-1];
+
+         if (empty($this->offset)) {
+             $idx = $page - 1;
+         }
+         else {
+             $n = $this->offset / $per_page; // should be rounded
+             if ($page > $n) {
+                 $idx = $page - $n - 1;
+             }
+             else {
+                 $idx = 9999;
+             }
+         }
+
+         return $paged_results[$idx];
      }
      
      public function get_next_skip_results()
