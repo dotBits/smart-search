@@ -61,27 +61,6 @@
          }
          // format
          $this->remote_search_url .= '&$format=json';
-         /*
-          * https://api.datamarket.azure.com/Data.ashx/Bing/Search/v1/Web?Query='agriturismi%20site:bio.tuttogreen.it'&Options='EnableHighlighting'&$skip=50&$format=json
-          
-         if (!empty($this->offset)) {
-             $this->remote_search_url = $this->skip_next_url;
-         }
-         else {
-             $this->remote_search_url = $this->plugin->config['search_providers'][$this->router_name]['base_uri'];
-             $this->remote_search_url .= "&Query='" . urlencode(urldecode($this->search_query));
-
-             $domain = 'site:' . $this->context_domain;
-             $this->remote_search_url .= urlencode(" $domain'");
-
-             if (
-                 $this->plugin->config['search_providers'][$this->router_name]['highlight_title'] ||
-                 $this->plugin->config['search_providers'][$this->router_name]['highlight_title']
-             ) {
-                 $this->remote_search_url .= "&Options='EnableHighlighting'";
-             }
-         }
-          */
      }
      
      protected function get_remote_results()
@@ -120,8 +99,8 @@
          if (empty($response->d->results)) {
              return false;
          }
-	 
-	 //$this->skip_next_url = (isset($response->d->__next)) ? $response->d->__next . '&$format=json':  null;
+	 // Messy BING! It always set __next URL even if there are NOT more results there
+	 $this->has_next = isset($response->d->__next);
 	 
          $results = array();
          foreach ($response->d->results as $result) {

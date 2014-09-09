@@ -64,10 +64,16 @@
      public $n_results = 50;
      
      /**
-      * Offset calculated by $per_page * $current_page
+      * Starting point cursor of result set
       * @var int $offset
       */
      public $offset = 0;
+     
+     /**
+      * Whether there are more results to fetch
+      * @var bool $has_next
+      */
+     protected $has_next = false;
 
      public function __construct($search_query = "")
      {
@@ -85,10 +91,10 @@
              $current_page = $wp_query->get('paged');
              $current_page = empty($current_page) ? 1 : $current_page;
              $per_page = intval(get_option('posts_per_page'));
-             $multiplier = round($current_page * $per_page / $this->n_results, 0, PHP_ROUND_HALF_UP);
-             // @TODO WP non si accorge che ci sono altri risultati
+             // whether to skip or not
+             $multiplier = ceil($current_page * $per_page / $this->n_results);
              if ($multiplier > 1) {
-                 $this->offset = $this->n_results * $multiplier;
+                 $this->offset = ($this->n_results * $multiplier) - $this->n_results;
              }
              $this->set_remote_search_url();
              // .. go!
@@ -195,7 +201,7 @@
                  $this->results[$index] = get_post($post_id);
              }
          }
-         $wp_query->set('post__in', $this->matched_post_ids);
+         $wp_query->set('post__in', $this->matched_post_ids); // @TODO is this used by $wp_query or is just a reference??
          
          $new_post_list = array();
          foreach ($this->results as $post) {	     
@@ -205,7 +211,7 @@
          $wp_query->found_posts = count($new_post_list);
          
          // adjust page number accordingly
-         $this->paginate_results();
+         $new_post_list = $this->paginate_results($new_post_list);
          
          remove_filter('the_posts', array($this, 'filter_smart_search_result_items'), 10);         
          return $new_post_list;
@@ -236,29 +242,29 @@
       * @param array $new_post_list
       * @return array
       */
-     protected function paginate_results()
+     protected function paginate_results($posts)
      {
          global $wp_query;
 
          $page = $wp_query->get('paged');
          $page = empty($page) ? 1 : $page;
          $per_page = $wp_query->get('posts_per_page');
-         $wp_query->max_num_pages = round($wp_query->found_posts / $per_page, 0, PHP_ROUND_HALF_UP);
 
-         $paged_results = array_chunk($new_post_list, $per_page);
+         $paged_results = array_chunk($posts, $per_page);
          $paged_results = apply_filters('smart_search_paginate_results', $paged_results, $this);
 
-         if (empty($this->offset)) {
-             $idx = $page - 1;
+         if (!empty($this->offset)) {
+             $all_pages = ceil(($this->offset + $this->n_results) / $per_page);
+             $wp_query->max_num_pages = $all_pages;
+             $page = $all_pages - $page + 1;
+             $idx = count($paged_results) - $page;
          }
          else {
-             $n = $this->offset / $per_page; // should be rounded
-             if ($page > $n) {
-                 $idx = $page - $n - 1;
-             }
-             else {
-                 $idx = 9999;
-             }
+             $wp_query->max_num_pages = count($paged_results);
+             $idx = $page - 1;
+         }         
+         if ($this->has_next) {
+             $wp_query->max_num_pages = $wp_query->max_num_pages + 1;
          }
 
          return $paged_results[$idx];
